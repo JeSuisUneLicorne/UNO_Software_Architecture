@@ -3,7 +3,7 @@ version := "1"
 
 scalaVersion := "3.2.2"
 
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.8"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
 
