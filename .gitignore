@@ -55,3 +55,4 @@ UNO.log
 .metals
 project/.bloop
 project/metals.sbt
+.bloop
