@@ -11,8 +11,9 @@ bin/
 .idea/
 target/
 
-#VS
+#VS / VSCode
 .vs
+.vscode
 
 # Maven
 log/
@@ -51,3 +52,4 @@ UNO.log
 
 #Stuff
 /null
+.metals

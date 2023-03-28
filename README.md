@@ -6,13 +6,18 @@
 
 ### About
 
-The classic UNO-Game in a new version, created in Scala 2. Updated to Scala 3.2.2.
+The classic UNO-Game in a new version, created in Scala 2. Updated to <a href="https://www.scala-lang.org/download/" target="_blank">Scala 3.2.2</a> and <a href="https://www.scala-sbt.org/" target="_blank">sbt 1.8.2</a>.
 
 This project by <a href="https://github.com/ju391bihhtwgkn" target="_blank">Julian Bihl</a>, <a href="https://github.com/JeSuisUneLicorne" target="_blank">Julian Zimmermann</a> and <a href="https://github.com/s0cy" target="_blank">s0cy</a> is the coursework for software architecture class at [University of Applied Sciences Constance (HTWG Konstanz)](https://www.htwg-konstanz.de/) for spring 2023. <br />
 
 
 
 Base version of the game is by [Konstantin Zabaznov](https://github.com/konstantinz001) and [Soniesen Ratnaingam](https://github.com/SoniRat). <br />
+
+
+### Setup
+
+Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project.
 
 
 ### Screenshots
@@ -50,10 +55,12 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
 <!-- </details> -->
 
 ---
-
+<details> 
   <summary> <b>Recommanded VSCode Plugins</b> </summary>
     <ul>
-        <li>Sbt</a>  
-        <li>Scala Syntax (official)</a>  
-        <li>Docker</a>  
+        <li>Sbt  
+        <li>Scala Syntax (official)
+        <li>Docker
+        <li>Scala (Metals)
     </ul>
+</details>
