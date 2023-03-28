@@ -50,6 +50,8 @@ project/.sbtserver
 # Application
 UNO.log
 
-#Stuff
+#Metals
 /null
 .metals
+project/.bloop
+project/metals.sbt
