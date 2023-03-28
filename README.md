@@ -6,9 +6,9 @@
 
 ### About
 
-The classic UNO-Game in a new version, created in Scala. Updated to Scala 3.x.
+The classic UNO-Game in a new version, created in Scala 2. Updated to Scala 3.2.2.
 
-This project by [Selma Sahuric](https://github.com/), [Julian Bihl](https://github.com/ju391bihhtwgkn) and  [Julian Zimmermann](https://github.com/JeSuisUneLicorne) is the coursework for software architecture class at [University of Applied Sciences Constance (HTWG Konstanz)](https://www.htwg-konstanz.de/) for spring 2023. <br />
+This project by <a href="https://github.com/ju391bihhtwgkn" target="_blank">Julian Bihl</a>, <a href="https://github.com/JeSuisUneLicorne" target="_blank">Julian Zimmermann</a> and <a href="https://github.com/s0cy" target="_blank">s0cy</a> is the coursework for software architecture class at [University of Applied Sciences Constance (HTWG Konstanz)](https://www.htwg-konstanz.de/) for spring 2023. <br />
 
 
 
@@ -48,3 +48,12 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
         <li> <a href="https://github.blog/2018-09-06-removing-jquery-from-github-frontend/" target="_blank">Removing jQuery from GitHub.com frontend (jQuery is obsolete)</a>  
     </ul>
 <!-- </details> -->
+
+---
+
+  <summary> <b>Recommanded VSCode Plugins</b> </summary>
+    <ul>
+        <li>Sbt</a>  
+        <li>Scala Syntax (official)</a>  
+        <li>Docker</a>  
+    </ul>

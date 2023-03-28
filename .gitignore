@@ -11,6 +11,9 @@ bin/
 .idea/
 target/
 
+#VS
+.vs
+
 # Maven
 log/
 target/
@@ -45,3 +48,6 @@ project/.sbtserver
 
 # Application
 UNO.log
+
+#Stuff
+/null
