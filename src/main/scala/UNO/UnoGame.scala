@@ -12,23 +12,18 @@ object UnoGame:
   val injector = Guice.createInjector(new UnoGameModule)
   val controller = injector.getInstance(classOf[controllerInterface])
   val tui = new TUI(controller)
-  var UIType: Boolean = if System.getenv("UI_TYPE").equals("gui") then true else false
+  var UIType: Boolean = true //if System.getenv("UI_TYPE").equals("gui") then true else false
 
-  @main 
-  def main(): Unit =
+  @main def main(): Unit =
     print(State.handle(instructionEvent()))
     print(State.handle(gameStatsEvent()))
 
-    if UIType.equals(true) then
+    if UIType == true then
       val gui = new SwingGui(controller)
-      var input1: String = ""
-
-      if input1 == "q" then
+    var input1: String = ""
+    while input1 != "q" 
+    do
+      input1 = readLine("\nInstruction: ")
+      print(tui.processInputLine(input1))
+      if (input1 == "q")
         System.exit(0)
-      while 
-        input1 != "q"
-      do
-        input1 = readLine("\nInstruction: ")
-        print(tui.processInputLine(input1))
-    // else
-    //   tui.processInputLine(args(0))
