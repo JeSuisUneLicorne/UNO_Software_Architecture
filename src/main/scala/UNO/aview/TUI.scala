@@ -1,8 +1,9 @@
 package UNO.aview
 
 import scala.swing.Reactor
+import scala.util.{Failure, Success, Try}
 
-import UNO.controller.controllerComponent.controllerBaseImp.{updateStates}
+import UNO.controller.controllerComponent.controllerBaseImp.updateStates
 import UNO.util.{State, Strategy, callFirstUnoEvent, callSecondUnoEvent, exitGameEvent, forgotCallUnoEvent, gameStatsEvent, removeCardEvent, removeFalseCardEvent, removePlayerCardEvent, setPlayerCardEvent, toManyCardsEvent}
 import UNO.controller.controllerComponent.controllerInterface
 
@@ -16,12 +17,12 @@ class TUI (controller: controllerInterface) extends Reactor:
         controller.getCard()
         State.handle(setPlayerCardEvent())
       case "r" => 
-        if (controller.playerList(0).playerCards(is(1).toInt).color.equals("black")) then
+        if controller.playerList(0).playerCards(is(1).toInt).color.equals("black") then
           controller.colorSet = is(2)
-        if (Strategy.handle(removeCardEvent(is(1).toInt),is(1).toInt) && controller.playerList(0).playerCards.size >= 3) then
+        if Strategy.handle(removeCardEvent(is(1).toInt),is(1).toInt) && controller.playerList(0).playerCards.size >= 3 then
           controller.removeCard(is(1).toInt)
           State.handle(removePlayerCardEvent(is(1).toInt),is(1).toInt)
-        else if (!Strategy.handle(removeCardEvent(is(1).toInt),is(1).toInt) && controller.playerList(0).playerCards.size >= 3) then
+        else if !Strategy.handle(removeCardEvent(is(1).toInt),is(1).toInt) && controller.playerList(0).playerCards.size >= 3 then
           State.handle(removeFalseCardEvent())
         else 
           controller.removeCard(is(1).toInt)
