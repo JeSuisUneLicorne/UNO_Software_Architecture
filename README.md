@@ -17,7 +17,7 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
 
 ### Setup
 
-Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project.
+Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project. Get the recommanded VSCode Plugins from below. Don't forget to enable Preview in the Markdown Plugin in Settings.
 
 
 ### Screenshots
@@ -62,5 +62,6 @@ Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">V
         <li>Scala Syntax (official)
         <li>Docker
         <li>Scala (Metals)
+        <li> Markdown All in One
     </ul>
 </details>

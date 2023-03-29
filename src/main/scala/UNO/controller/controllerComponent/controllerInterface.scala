@@ -1,13 +1,13 @@
 package UNO.controller.controllerComponent
 
+import scala.swing.event.Event
+import scala.swing.Publisher
+
 import UNO.model.PlayerComponent.playerBaseImp.Player
 import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.stackComponent.stackBaseImp.Stack
 
-import scala.swing.Publisher
-
-
-trait controllerInterface extends Publisher{
+trait controllerInterface extends Publisher:
   var playername1: String
   var playername2 : String
   var stackCard: Stack
@@ -19,7 +19,7 @@ trait controllerInterface extends Publisher{
   def initPlayStack() : List[Card]
   def initPlayerList(): List[Player]
   def getCard(): Unit
-  def removeCard(handindex: Int)
+  def removeCard(handindex: Int): Unit
   def undoGet: Unit
   def redoGet: Unit
   def stackEmpty(): Stack
@@ -27,9 +27,4 @@ trait controllerInterface extends Publisher{
   def load: Unit
   def setDefault(): Unit
 
-
-
-  import scala.swing.event.Event
-
   class updateState extends Event
-}

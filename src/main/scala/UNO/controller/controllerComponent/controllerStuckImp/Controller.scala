@@ -6,21 +6,14 @@ import UNO.model.PlayerComponent.playerBaseImp.Player
 import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.stackComponent.stackBaseImp.Stack
 
-
-class Controller extends controllerInterface{
-
-  override var playername1 = "Konstantin"
-  override var playername2 = "Soni"
-
-  override var stackCard: Stack = Stack(List(new Card("",""))).initStack()
-
-  override var playerList: List[Player] = List(Player("Testy",List(Card("","red"))))
-
-  override var playStack2: List[Card] = List(Card("","blue"))
-
-  override var colorSet: String = "yellow"
-
-  override var unoCall: Boolean = false
+abstract class Controller extends controllerInterface:
+  var playername1 = "Saitama"  //Konstantin: here all val -> override val -> not working
+  var playername2 = "Genos"
+  var stackCard: Stack = Stack(List(new Card("",""))).initStack()
+  var playerList: List[Player] = List(Player("Testy",List(Card("","red"))))
+  var playStack2: List[Card] = List(Card("","blue"))
+  var colorSet: String = "yellow"
+  var unoCall: Boolean = false
 
   override def initPlayStack(): List[Card] = List(Card("","blue"))
 
@@ -43,5 +36,3 @@ class Controller extends controllerInterface{
   override def setDefault(): Unit = {}
 
   override def initStackCard() : Stack = Stack(List(new Card("",""))).initStack()
-
-}
