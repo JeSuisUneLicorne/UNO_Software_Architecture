@@ -1,15 +1,18 @@
-package controller
+package scala.controller
 
-import UNO.UnoGame.injector
-import UNO.controller.controllerComponent.controllerBaseImp.{endStates, updateStates, welcomeStates}
-import org.scalatest.{Matchers, WordSpec}
-import UNO.controller.controllerComponent.controllerInterface
-
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import com.google.inject.Guice
 import scala.swing.event.Event
 
-class eventSpec extends WordSpec with Matchers with Event{
+//import UNO.UnoGame.injector
+import UNO.UnoGameModule
+import UNO.controller.controllerComponent.controllerBaseImp.{endStates, updateStates, welcomeStates}
+import UNO.controller.controllerComponent.controllerInterface
 
-  val controller = injector.getInstance(classOf[controllerInterface])
+class EventSpec extends AnyWordSpec with Matchers with Event {
+
+  val controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface]) 
   "A welcomeState" should {
     "have event" in {
       val event = new Event {}

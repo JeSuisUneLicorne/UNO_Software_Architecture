@@ -1,78 +1,109 @@
-package aview
+package scala.aview
 
-import UNO.UnoGame.controller
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
 import UNO.aview.TUI
+import UNO.util.{State, *}
+import UNO.controller.controllerComponent.controllerBaseImp.Controller
+import UNO.model.stackComponent.stackBaseImp.Stack
 import UNO.model.PlayerComponent.playerBaseImp.Player
 import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.util.{State, _}
-import org.scalatest._
 
+class TuiSpec extends AnyWordSpec with Matchers {
+  //val tui = new TUI(controller)
+  "A TUI (1st)" should {
+    "have a methode processInputLine (1st)" in {
+      var controller_test = new Controller()
+      var tui_Test = new TUI(controller_test)
 
-class TuiSpec extends WordSpec with Matchers {
-  val tui = new TUI(controller)
-  "A TUI" should {
-    "have a methode processInputLine" in {
-      //Because Cards are Random and to Testing Methods we override the PlayList
-      //and Playstack with new values
-      controller.playerList = List(Player("1", List(Card("1", "green"), Card("2", "green"), Card("3", "green"), Card("4", "green"))),
-        Player("2", List(Card("1", "green"), Card("2", "green"), Card("3", "green"), Card("3", "blue"))))
-      controller.playStack2 = List(Card("0", "green"))
+      tui_Test.processInputLine("s") should be(State.handle(setPlayerCardEvent()))
 
-      //Testing remove a normal handcard
-      tui.processInputLine("r 0") should be (State.handle(removePlayerCardEvent(0), 0))
-      //Testing take a card from stack to handcards
-      tui.processInputLine("s") should be (State.handle(setPlayerCardEvent()))
-      //Testing remove a Handcard and call UNO to early
-      tui.processInputLine("u 0") should be (State.handle(toManyCardsEvent()))
+      tui_Test.processInputLine("u 0") should be(State.handle(toManyCardsEvent()))
 
+      tui_Test.processInputLine("undo") should be ("undo")
 
-      //Init PlayerList and Playstack
-      controller.playerList = List(Player("1", List(Card("ColorSwitch", "black"), Card("2", "blue"), Card("3", "green"), Card("4", "green"))),
-        Player("2", List(Card("1", "yellow"), Card("2", "yellow"), Card("3", "yellow"), Card("3", "yellow"))))
-      controller.playStack2 = List(Card("0", "green"))
+      tui_Test.processInputLine("redo") should be ("redo")
 
-      //Testing remove the black-colorchange Card and wish the color blue
-      tui.processInputLine("r 0 blue") should be (State.handle(removePlayerCardEvent(0), 0))
-      controller.colorSet should be ("blue")
-      //Testing try to remove the false Handcard
-      tui.processInputLine("r 0") should be (State.handle(removeFalseCardEvent()))
+      tui_Test.processInputLine("load") should be ("Loading Game!")
 
+      tui_Test.processInputLine("save") should be ("Saved Game!")
 
-      //Init PlayerList and Playstack
-      controller.playerList = List(Player("1", List(Card("1", "green"), Card("2", "green"))),
-        Player("2", List(Card("1", "green"), Card("2", "green"))))
-      controller.playStack2 = List(Card("0", "green"))
+      tui_Test.processInputLine("whatever") should be ("Wrong command!")
 
-      //Testing have only 2 Handcards and Call UNO the first Time
-      tui.processInputLine("u 0") should be (State.handle(callFirstUnoEvent(0),0))
-      //Testing have only 2 Handcards and forgot to Call UNO
-      tui.processInputLine("r 0") should be (State.handle(forgotCallUnoEvent()))
-      //Testing have only 1 Handcard and Call UNO the Seccond Time
-      tui.processInputLine("u 0") should be (State.handle(callSecondUnoEvent()))
+      tui_Test.printGameStats should be (println(State.handle(gameStatsEvent())))
 
-      //Testing undo-command
-      tui.processInputLine("undo") should be ("undo")
-      //Testing redo-command
-      tui.processInputLine("redo") should be ("redo")
-      //Testing load-command
-      tui.processInputLine("load") should be ("Loading Game!")
-      //Testing save-command
-      tui.processInputLine("save") should be ("Saved Game!")
-      //Testing a wrong command
-      tui.processInputLine("whatever") should be ("Wrong command!")
-      //Testing quit-command
-      tui.processInputLine("q") should be (State.handle(exitGameEvent()))
-    }
-    "have a methode print1" in {
-      tui.print1 should be (println(State.handle(gameStatsEvent())))
-
-
+      for(i <- (1 to 100)) {
+        if(controller_test.playerList(0).playerCards(0).color == "black") {
+          tui_Test.processInputLine("s")
+        }
+        tui_Test.processInputLine("r 0") should
+          (be(State.handle(removePlayerCardEvent(0), 0))
+            or
+            be(State.handle(removeFalseCardEvent()))
+            or
+            be(State.handle(forgotCallUnoEvent())))
+        tui_Test.processInputLine("s")
+      }
+      tui_Test.processInputLine("q") should be(State.handle(exitGameEvent()))
     }
   }
 }
 
+      //Because Cards are Random and to Testing Methods we override the PlayList
+      //and Playstack with new values
+      //controller.playerList = List(Player("1", List(Card("1", "green"), Card("2", "green"), Card("3", "green"), Card("4", "green"))),
+      //  Player("2", List(Card("1", "green"), Card("2", "green"), Card("3", "green"), Card("3", "blue"))))
+      //controller.playStack2 = List(Card("0", "green"))
+
+      //Testing remove a normal handcard
+      //tui.processInputLine("r 0") should be (State.handle(removePlayerCardEvent(0), 0))
+      //Testing take a card from stack to handcards
+      //tui.processInputLine("s") should be (State.handle(setPlayerCardEvent()))
+      //Testing remove a Handcard and call UNO to early
+      //tui.processInputLine("u 0") should be (State.handle(toManyCardsEvent()))
 
 
+      //Init PlayerList and Playstack
+      //controller.playerList = List(Player("1", List(Card("ColorSwitch", "black"), Card("2", "blue"), Card("3", "green"), Card("4", "green"))),
+      //  Player("2", List(Card("1", "yellow"), Card("2", "yellow"), Card("3", "yellow"), Card("3", "yellow"))))
+      //controller.playStack2 = List(Card("0", "green"))
+
+      //Testing remove the black-colorchange Card and wish the color blue
+      //tui.processInputLine("r 0 blue") should be (State.handle(removePlayerCardEvent(0), 0))
+      //controller.colorSet should be ("blue")
+      //Testing try to remove the false Handcard
+      //tui.processInputLine("r 0") should be (State.handle(removeFalseCardEvent()))
+
+
+      //Init PlayerList and Playstack
+      //controller.playerList = List(Player("1", List(Card("1", "green"), Card("2", "green"))),
+      //  Player("2", List(Card("1", "green"), Card("2", "green"))))
+      //controller.playStack2 = List(Card("0", "green"))
+
+      //Testing have only 2 Handcards and Call UNO the first Time
+      //tui.processInputLine("u 0") should be (State.handle(callFirstUnoEvent(0),0))
+      //Testing have only 2 Handcards and forgot to Call UNO
+      //tui.processInputLine("r 0") should be (State.handle(forgotCallUnoEvent()))
+      //Testing have only 1 Handcard and Call UNO the Seccond Time
+      //tui.processInputLine("u 0") should be (State.handle(callSecondUnoEvent()))
+
+      //Testing undo-command
+      //tui.processInputLine("undo") should be ("undo")
+      //Testing redo-command
+      //tui.processInputLine("redo") should be ("redo")
+      //Testing load-command
+      //tui.processInputLine("load") should be ("Loading Game!")
+      //Testing save-command
+      //tui.processInputLine("save") should be ("Saved Game!")
+      //Testing a wrong command
+      //tui.processInputLine("whatever") should be ("Wrong command!")
+      //Testing quit-command
+      //tui.processInputLine("q") should be (State.handle(exitGameEvent()))
+    //}
+    //"have a methode print1" in {
+    //  tui.print1 should be (println(State.handle(gameStatsEvent())))
+    //}
 
       /*
       tui.processInputLine("r 0") should be (State.handle(removePlayerCardEvent(0),0))

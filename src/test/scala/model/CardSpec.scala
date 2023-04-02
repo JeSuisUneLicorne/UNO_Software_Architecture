@@ -1,9 +1,11 @@
-package model
+package scala.model
+
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import UNO.model.cardComponent.cardBaseImp.Card
-import org.scalatest._
 
-class CardSpec extends WordSpec with Matchers {
+class CardSpec extends AnyWordSpec with Matchers {
   "A Card" when {
     "new" should {
       val card = Card("3", "red")

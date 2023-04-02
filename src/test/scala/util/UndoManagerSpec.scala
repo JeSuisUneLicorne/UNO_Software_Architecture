@@ -1,9 +1,11 @@
-package util
+package scala.util
+
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import UNO.util.UndoManager
-import org.scalatest._
 
-class UndoManagerSpec extends WordSpec with Matchers {
+class UndoManagerSpec extends AnyWordSpec with Matchers {
   "An UndoManager" should {
     val undoManager = new UndoManager
 
