@@ -1,7 +1,5 @@
 package UNO.model.cardComponent
 
-
-trait CardInterface {
+trait CardInterface:
   def value: String
   def color: String
-}

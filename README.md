@@ -19,6 +19,9 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
 
 Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project. Get the recommanded VSCode Plugins from below. Don't forget to enable Preview in the Markdown Plugin in Settings.
 
+### Testing
+
+Updated from WordSpec to <a href="https://www.scalatest.org/scaladoc/3.2.0/org/scalatest/wordspec/AnyWordSpec.html" target="_blank">AnyWordSpec</a>.
 
 ### Screenshots
 

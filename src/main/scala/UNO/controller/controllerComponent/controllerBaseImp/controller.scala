@@ -14,7 +14,7 @@ import UNO.util.UndoManager
 import UNO.model.fileIOComponent.FileIOTrait
 import UNO.model.fileIOComponent.fileIOJsonImp.FileIO
 
-class controller @Inject() extends controllerInterface with Publisher:
+class Controller @Inject() extends controllerInterface with Publisher:
   var playername1 = "1"
   var playername2 = "2"
   var stackCard = initStackCard()
