@@ -50,7 +50,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
     "have a method undoGet" in {
       val cardSizeBefor = controller.playerList(0).playerCards.size
       controller.removeCard(0)
-      val cardSizeRemove = controller.playerList(1).playerCards.size
+      val cardSizeRemove = controller.playerList(0).playerCards.size
       //testing undoStep
       controller.undoGet
       val cardSizeAfter = controller.playerList(0).playerCards.size

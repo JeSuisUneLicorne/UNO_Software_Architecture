@@ -56,3 +56,6 @@ UNO.log
 project/.bloop
 project/metals.sbt
 .bloop
+
+#Worksheets
+src/WorkSheets/Scala/.scala-build/

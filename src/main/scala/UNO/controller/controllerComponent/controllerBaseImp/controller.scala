@@ -36,7 +36,7 @@ class Controller @Inject() extends controllerInterface with Publisher:
 
   def initStackCard(): Stack =
     var stackCards =Stack(List(new Card("",""))).initStack()
-    (1 to 100).foreach((i)=>{
+    (1 to 100).foreach((i) => {
       stackCards = stackCards.shuffleCards()
     })
     stackCards

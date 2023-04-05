@@ -7,6 +7,11 @@ import UNO.controller.controllerComponent.controllerBaseImp.updateStates
 import UNO.util.{State, Strategy, callFirstUnoEvent, callSecondUnoEvent, exitGameEvent, forgotCallUnoEvent, gameStatsEvent, removeCardEvent, removeFalseCardEvent, removePlayerCardEvent, setPlayerCardEvent, toManyCardsEvent}
 import UNO.controller.controllerComponent.controllerInterface
 
+enum Letter(val letter_string: String):
+  case U extends Letter("u")
+  case R extends Letter("r")
+
+
 class TUI (controller: controllerInterface) extends Reactor:
   listenTo(controller)
 
