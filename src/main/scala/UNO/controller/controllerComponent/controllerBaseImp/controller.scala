@@ -3,6 +3,7 @@ package UNO.controller.controllerComponent.controllerBaseImp
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import scala.swing.Publisher
+import scala.util.{Failure, Success, Try}
 
 import UNO.UnoGameModule
 import UNO.controller.controllerComponent.*
@@ -12,7 +13,8 @@ import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.stackComponent.stackBaseImp.Stack
 import UNO.util.UndoManager
 import UNO.model.fileIOComponent.FileIOTrait
-import UNO.model.fileIOComponent.fileIOJsonImp.FileIO
+//import UNO.model.fileIOComponent.fileIOJsonImp.FileIO
+import UNO.model.fileIOComponent.fileIOXmlImp.FileIO
 
 class Controller @Inject() extends controllerInterface with Publisher:
   var playername1 = "1"
@@ -88,7 +90,10 @@ class Controller @Inject() extends controllerInterface with Publisher:
     fileIo.save(GameState(playerList, playStack2))
 
   override def load: Unit =
-    gameState = fileIo.load
+    Try(fileIo.load) match
+      case Success(value) => gameState = value
+      case Failure(e) => gameState
+    //gameState = fileIo.load
     playerList = gameState.playerList
     stackCard = gameState.getstackCard()
     playStack2 = gameState.playStack

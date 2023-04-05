@@ -9,4 +9,5 @@ trait PlayerInterface:
   def tryRemovePlayerCards(index: Int): Option[Player]
   def removePlayerCards(index: Int): Player
   def setPlayerCards(setCard: Card): Player
+  def trySetPlayerCards(setCard : Card): Option[Player]
   def toString: String

@@ -10,7 +10,14 @@ case class Player(name: String, playerCards: List[Card]) extends PlayerInterface
     name + "\n" + playerCards + "\n"
 
   def setPlayerCards(setCard: Card): Player =
-    copy(playerCards = setCard :: playerCards)
+      trySetPlayerCards(setCard) match
+        case Some(player) => player
+        case None => throw new Exception("Karten konnten nicht ersetzt werden!\n")      
+
+  def trySetPlayerCards(setCard: Card): Option[Player] =
+      Try(copy(playerCards = setCard :: playerCards)) match
+        case Success(player) => Some(copy(playerCards = setCard :: playerCards))
+        case Failure(_) => None
 
   def removePlayerCards(index: Int): Player =
     tryRemovePlayerCards(index) match

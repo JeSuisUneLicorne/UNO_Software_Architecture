@@ -6,6 +6,7 @@ import scala.swing.Publisher
 import UNO.model.PlayerComponent.playerBaseImp.Player
 import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.stackComponent.stackBaseImp.Stack
+import scala.util.Try
 
 trait controllerInterface extends Publisher:
   var playername1: String
