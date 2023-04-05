@@ -4,9 +4,11 @@
 <!-- ![Logo](src/main/Pics/UNO-Logo.png) -->
 
 
+[![Coverage Status](https://coveralls.io/repos/github/JeSuisUneLicorne/UNO_Software_Architecture/badge.svg?branch=main)](https://coveralls.io/github/JeSuisUneLicorne/UNO_Software_Architecture?branch=main)
+
 ### About
 
-The classic UNO-Game in a new version, created in Scala 2. Updated to <a href="https://www.scala-lang.org/download/" target="_blank">Scala 3.2.2</a> and <a href="https://www.scala-sbt.org/" target="_blank">sbt 1.8.2</a>.
+The classic UNO-Game in a new version, created in Scala 2. Updated to <a href="https://www.scala-lang.org/download/" target="_blank">Scala 3.2.2</a>, <a href="https://www.scala-sbt.org/" target="_blank">sbt 1.8.2</a> and <a href="https://docs.aws.amazon.com/corretto/latest/corretto-19-ug/downloads-list.html" target="_blank">Java 19 (Amazon Corretto)</a>.
 
 This project by <a href="https://github.com/ju391bihhtwgkn" target="_blank">Julian Bihl</a>, <a href="https://github.com/JeSuisUneLicorne" target="_blank">Julian Zimmermann</a> and <a href="https://github.com/s0cy" target="_blank">s0cy</a> is the coursework for software architecture class at [University of Applied Sciences Constance (HTWG Konstanz)](https://www.htwg-konstanz.de/) for spring 2023. <br />
 
@@ -19,9 +21,15 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
 
 Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project. Get the recommanded VSCode Plugins from below. Don't forget to enable Preview in the Markdown Plugin in Settings.
 
+SBT: ```run / clean / compile / test```
+
+Run tests with with enabled coverage: ```sbt clean coverage test``` (more info about <a href="https://www.youtube.com/watch?v=oz_HcHvbp7Y" target="_blank">coverage</a>)
+
 ### Testing
 
 Updated from WordSpec to <a href="https://www.scalatest.org/scaladoc/3.2.0/org/scalatest/wordspec/AnyWordSpec.html" target="_blank">AnyWordSpec</a>.
+
+In sbt console type ```test```.
 
 ### Screenshots
 

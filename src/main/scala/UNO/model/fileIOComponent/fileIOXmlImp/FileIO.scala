@@ -3,6 +3,8 @@ package UNO.model.fileIOComponent.fileIOXmlImp
 import java.io.{File, PrintWriter}
 import scala.xml.{Elem, PrettyPrinter}
 import scala.util.{Failure, Success, Try}
+import play.api.libs.json.{JsValue, Json}
+import scala.io.Source
 
 import UNO.model.GameState
 import UNO.model.PlayerComponent.playerBaseImp.Player
@@ -10,17 +12,35 @@ import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.fileIOComponent.FileIOTrait
 
 class FileIO extends FileIOTrait:
-  override def load: GameState =
-    val file = scala.xml.XML.loadFile("gamestate.xml")
-    GameState(setPlayerList(file), setPlayStack(file))
-    tryload match
-      case Some(file: Elem) => GameState(setPlayerList(file), setPlayStack(file))
-      case None => throw new Exception("Spielstand konnte nicht geladen werden.\n")
 
-  def tryload: Option[Elem] =
-    Try(scala.xml.XML.loadFile("gamestate.xml")) match
-      case Success(file) => Some(file)
-      case Failure(_) => None
+  // was before:
+  // override def load: GameState =
+  //   val file = scala.xml.XML.loadFile("gamestate.xml")
+  //   GameState(setPlayerList(file), setPlayStack(file))
+  //   tryload match
+  //     case Some(file: Elem) => GameState(setPlayerList(file), setPlayStack(file))
+  //     case None => throw new Exception("Spielstand konnte nicht geladen werden.\n")
+
+  // def tryload: Option[Elem] =
+  //   Try(scala.xml.XML.loadFile("gamestate.xml")) match
+  //     case Success(file) => Some(file)
+  //     case Failure(_) => None
+
+  override def load: Try[Option[(List[Player], List[Card])]] =
+    var matchFieldOption: Option[(List[Player], List[Card])] = None
+    Try {
+      val file = scala.xml.XML.loadFile("gamestate.xml")
+      matchFieldOption = Some((List[Player](), List[Card]()))
+      matchFieldOption match
+        case Some((playList,playStack2)) =>
+          var newplaylist = playList
+          var newplaystack2 = playStack2
+          newplaylist = setPlayerList(file)
+          newplaystack2= setPlayStack(file)
+          matchFieldOption = Some((newplaylist,newplaystack2))
+        case None=>
+      matchFieldOption
+    }
 
   def returnList (newCard: Card, oldList: List[Card], index: Int, playerValueIndex: List[String], playerColorIndex: List[String]): List[Card] =
     if((playerValueIndex.size-index) < 1) then
@@ -45,8 +65,7 @@ class FileIO extends FileIOTrait:
   override def save(gameState: GameState): Unit =
     val pw = new PrintWriter(new File("gamestate.xml"))
     val prettyPrinter = new PrettyPrinter(200,4)
-    val xml = prettyPrinter.format(gameStateToXml(gameState))
-    pw.write(xml)
+    pw.write(prettyPrinter.format(gameStateToXml(gameState)))     //val xml = && pw.write(xml) -> test!
     pw.close()
 
   def gameStateToXml(gameState: GameState): Elem =

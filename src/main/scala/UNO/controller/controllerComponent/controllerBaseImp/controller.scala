@@ -3,6 +3,7 @@ package UNO.controller.controllerComponent.controllerBaseImp
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import scala.swing.Publisher
+import scala.util.{Success, Failure}
 
 import UNO.UnoGameModule
 import UNO.controller.controllerComponent.*
@@ -13,6 +14,7 @@ import UNO.model.stackComponent.stackBaseImp.Stack
 import UNO.util.UndoManager
 import UNO.model.fileIOComponent.FileIOTrait
 import UNO.model.fileIOComponent.fileIOJsonImp.FileIO
+import UNO.controller.controllerComponent.GameStatus._
 
 class Controller @Inject() extends controllerInterface with Publisher:
   var playername1 = "1"
@@ -22,11 +24,15 @@ class Controller @Inject() extends controllerInterface with Publisher:
   var playStack2 = initPlayStack()
   var colorSet = ""
   var unoCall = false
+  var gameStatus: GameStatus = IDLE
 
   private val undoManager = new UndoManager
   var gameState: GameState = GameState(playerList, playStack2)
-  val injector = Guice.createInjector(new UnoGameModule)
-  val fileIo: FileIO = injector.getInstance(classOf[FileIO])
+  //val injector = Guice.createInjector(new UnoGameModule)
+  //val fileIo = injector.getInstance(classOf[FileIO])
+  def Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
+  val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
+
 
   def setDefault(): Unit =
     stackCard = initStackCard()
@@ -36,7 +42,7 @@ class Controller @Inject() extends controllerInterface with Publisher:
 
   def initStackCard(): Stack =
     var stackCards =Stack(List(new Card("",""))).initStack()
-    (1 to 100).foreach((i)=>{
+    (1 to 100).foreach((i) => {
       stackCards = stackCards.shuffleCards()
     })
     stackCards
@@ -76,20 +82,53 @@ class Controller @Inject() extends controllerInterface with Publisher:
     unoCall = false
     publish(new updateStates)
 
-  def undoGet: Unit =
-    undoManager.undoStep()
-    publish(new updateStates)
+  def undoGet: Unit = undoRedoget(true)
+  def redoGet: Unit = undoRedoget(false)
 
-  def redoGet: Unit =
-    undoManager.redoStep()
-    publish(new updateStates)
+  def undoRedoget(value: Boolean): Unit =
+    if(value == true)
+      undoManager.undoStep()
+      publish(new updateStates)
+    else
+      undoManager.redoStep()
+      publish(new updateStates)
+
+  // def undoGet: Unit =
+  //   undoManager.undoStep()
+  //   publish(new updateStates)
+
+  // def redoGet: Unit =
+  //   undoManager.redoStep()
+  //   publish(new updateStates)
 
   override def save: Unit =
     fileIo.save(GameState(playerList, playStack2))
 
-  override def load: Unit =
-    gameState = fileIo.load
-    playerList = gameState.playerList
-    stackCard = gameState.getstackCard()
-    playStack2 = gameState.playStack
+  // override def load: Unit =
+  //   gameState = fileIo.load
+  //   playerList = gameState.playerList
+  //   stackCard = gameState.getstackCard()
+  //   playStack2 = gameState.playStack
+  //   publish(new updateStates)
+
+  override def load:String=
+    val gameState = fileIo.load
+    gameState match {
+      case Success(option) =>
+        option.match {
+          case Some(lists) =>
+            val(playerliste, playstackonthefield) = lists
+            playerList = playerliste
+            playStack2 = playstackonthefield
+            gameStatus = LOADED
+            "load success"
+          case None=>
+            gameStatus = COULD_NOT_LOAD
+            "load not success"
+        }
+      case Failure(e) =>
+        gameStatus = COULD_NOT_LOAD
+        "load not success"
+    }
     publish(new updateStates)
+    "load"

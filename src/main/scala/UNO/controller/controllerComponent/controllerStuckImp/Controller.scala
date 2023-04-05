@@ -31,7 +31,7 @@ abstract class Controller extends controllerInterface:
 
   override def save: Unit = {}
 
-  override def load: Unit = {}
+  override def load: String //override def load: Unit = {}
 
   override def setDefault(): Unit = {}
 

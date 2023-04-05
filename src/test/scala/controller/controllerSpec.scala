@@ -47,10 +47,10 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       val cardSizeAfter = controller.playerList(1).playerCards.size
       cardSizeAfter should be(cardSizeBefor - 1)
     }
-    "have a method undoGet" in {
+    "have a method undoGet" in {     //The following test gets sometimes an error and sometimes not. Why?!
       val cardSizeBefor = controller.playerList(0).playerCards.size
       controller.removeCard(0)
-      val cardSizeRemove = controller.playerList(1).playerCards.size
+      val cardSizeRemove = controller.playerList(0).playerCards.size
       //testing undoStep
       controller.undoGet
       val cardSizeAfter = controller.playerList(0).playerCards.size

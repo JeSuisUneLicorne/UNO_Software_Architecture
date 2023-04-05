@@ -49,10 +49,14 @@ project/.sbtserver
 
 # Application
 UNO.log
+gamestate.*
 
-#Metals
+# Metals
 /null
 .metals
 project/.bloop
 project/metals.sbt
 .bloop
+
+# Worksheets
+src/WorkSheets/Scala/.scala-build/

@@ -44,13 +44,13 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
     controller.playerList(0).playerCards(handindex).value match
       case "+2" =>
         (1 to 2).foreach((i)=> 
-          controller.playerList = List( controller.playerList(0),controller.playerList(1).setPlayerCards(controller.stackCard.getCardFromStack()))
+          controller.playerList = List(controller.playerList(0),controller.playerList(1).setPlayerCards(controller.stackCard.getCardFromStack()))
           controller.stackCard = controller.stackCard.removeCard()
         )
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
       case "4+ ColorSwitch" => 
         (1 to 4).foreach((i)=>
-          controller.playerList = List( controller.playerList(0),controller.playerList(1).setPlayerCards(controller.stackCard.getCardFromStack()))
+          controller.playerList = List(controller.playerList(0),controller.playerList(1).setPlayerCards(controller.stackCard.getCardFromStack()))
           controller.stackCard = controller.stackCard.removeCard()
         )
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
