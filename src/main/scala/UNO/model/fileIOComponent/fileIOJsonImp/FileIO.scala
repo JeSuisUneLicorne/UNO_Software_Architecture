@@ -11,19 +11,38 @@ import UNO.model.cardComponent.cardBaseImp.Card
 import UNO.model.fileIOComponent.FileIOTrait
 
 class FileIO extends FileIOTrait:
-  override def load: GameState =
-    val file: String = Source.fromFile("gamestate.json").getLines.mkString
-    val json: JsValue = Json.parse(file)
-    GameState(setPlayerList(json), setPlayStack(json))
-    tryload match
-      case Some(json: JsValue) => GameState(setPlayerList(json), setPlayStack(json))
-      case None => throw new Exception("Spielstand konnte nicht geladen werden.\n")
 
-  def tryload: Option[JsValue] =
-    Try(Source.fromFile("gamestate.json").getLines.mkString) match
-      case Success(file) => Some(Json.parse(file))
-      case Failure(_) => None
+  // was before:
+  // override def load: GameState =
+  //   val file: String = Source.fromFile("gamestate.json").getLines.mkString
+  //   val json: JsValue = Json.parse(file)
+  //   GameState(setPlayerList(json), setPlayStack(json))
+  //   tryload match
+  //     case Some(json: JsValue) => GameState(setPlayerList(json), setPlayStack(json))
+  //     case None => throw new Exception("Spielstand konnte nicht geladen werden.\n")
 
+  // def tryload: Option[JsValue] =
+  //   Try(Source.fromFile("gamestate.json").getLines.mkString) match
+  //     case Success(file) => Some(Json.parse(file))
+  //     case Failure(_) => None
+
+  override def load: Try[Option[(List[Player], List[Card])]] =
+    var matchFieldOption: Option[(List[Player], List[Card])] = None
+    Try {
+      val file: String = Source.fromFile("gamestate.json").getLines.mkString
+      val json: JsValue = Json.parse(file)
+      matchFieldOption = Some((List[Player](), List[Card]()))
+      matchFieldOption match 
+        case Some((playList,playStack2))=>
+          var newplaylist = playList
+          var newplaystack2 = playStack2
+          newplaylist = setPlayerList(json)
+          newplaystack2= setPlayStack(json)
+          matchFieldOption = Some((newplaylist,newplaystack2))
+        case None =>
+      matchFieldOption
+    }
+    
   def returnList (newCard: Card, oldList: List[Card], index: Int, playerValueIndex: List[String], playerColorIndex: List[String]): List[Card] =
     if((playerValueIndex.size - index) < 1) then
       newCard:: oldList
@@ -45,12 +64,9 @@ class FileIO extends FileIOTrait:
       (json \ "gameState" \ "playStackColor").as[String]))
 
   override def save(gameState: GameState): Unit =
-    try
-      val pw = new PrintWriter(new File("gamestate.json"))
-      pw.write(Json.prettyPrint(gameStateToJson(gameState)))
-      pw.close
-    catch
-      case e: Exception => println("Spiel konnte nicht gesichert werden")
+    val pw = new PrintWriter(new File("gamestate.json"))
+    pw.write(Json.prettyPrint(gameStateToJson(gameState)))
+    pw.close
 
   def gameStateToJson(gameState: GameState) =
     Json.obj(

@@ -9,8 +9,7 @@ import controller.controllerComponent.controllerInterface
 import UNO.aview.TUI
 
 object UnoGame:
-  val injector = Guice.createInjector(new UnoGameModule)
-  val Controller = injector.getInstance(classOf[controllerInterface])
+  val Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   val tui = new TUI(Controller)
   var UIType: Boolean = true //if System.getenv("UI_TYPE").equals("gui") then true else false
 
