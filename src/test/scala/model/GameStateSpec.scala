@@ -13,7 +13,7 @@ class GameStateSpec extends AnyWordSpec with Matchers {
   var playerList: List[Player] = List(Player("Testy",List(Card("","red"))))
   var gameState: GameState = new GameState(playerList, playStack2)
 
-  "A GameState" when {
+  "A UNO.GameState" when {
     "have a method getplayerList" in {
       gameState.getplayerList() should be(List(Player("Testy", List(Card("", "red")))))
     }
