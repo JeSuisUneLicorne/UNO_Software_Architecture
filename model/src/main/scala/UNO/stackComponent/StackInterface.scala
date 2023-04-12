@@ -1,7 +1,10 @@
-package UNO.stackComponent
+package UNO
 
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.stackComponent.stackBaseImp.Stack
+package stackComponent
+
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.stackComponent.stackBaseImp.Stack
+import UNO.cardComponent.cardBaseImp.Card
 
 trait StackInterface:
   def stackCards: List[Card]

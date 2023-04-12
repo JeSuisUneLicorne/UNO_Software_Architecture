@@ -1,4 +1,6 @@
-package UNO.util
+package UNO
+
+package util
 
 trait Command:
   def doStep(): Unit

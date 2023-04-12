@@ -1,4 +1,6 @@
-package UNO.gui
+package UNO
+
+package gui
 
 import UNO.CardPanel
 

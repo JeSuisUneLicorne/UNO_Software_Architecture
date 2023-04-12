@@ -1,8 +1,10 @@
-package UNO.gui
+package UNO
 
-import UNO.controller.controllerComponent.controllerBaseImp.endStates
-import UNO.controller.controllerComponent.controllerInterface
-import UNO.model.cardComponent.cardBaseImp.Card
+package gui
+
+import UNO.controllerComponent.controllerBaseImp.endStates
+import UNO.controllerComponent.controllerInterface
+import UNO.cardComponent.cardBaseImp.Card
 import UNO.util.{Strategy, removeCardEvent}
 
 import java.awt.Image

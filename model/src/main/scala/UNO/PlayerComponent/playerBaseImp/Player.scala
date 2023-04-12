@@ -1,9 +1,12 @@
-package UNO.PlayerComponent.playerBaseImp
+package UNO
+
+package PlayerComponent.playerBaseImp
 
 import scala.util.{Failure, Success, Try}
 
-import UNO.model.PlayerComponent.PlayerInterface
-import UNO.model.cardComponent.cardBaseImp.Card
+import UNO.PlayerComponent.PlayerInterface
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.cardComponent.cardBaseImp.Card
 
 case class Player(name: String, playerCards: List[Card]) extends PlayerInterface:
   override def toString: String =

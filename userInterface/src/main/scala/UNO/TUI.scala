@@ -1,7 +1,7 @@
 package UNO
 
-import UNO.controller.controllerComponent.controllerBaseImp.updateStates
-import UNO.controller.controllerComponent.controllerInterface
+import UNO.controllerComponent.controllerBaseImp.updateStates
+import UNO.controllerComponent.controllerInterface
 import UNO.util.*
 
 import scala.swing.Reactor

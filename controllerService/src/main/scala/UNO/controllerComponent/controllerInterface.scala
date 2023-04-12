@@ -1,10 +1,13 @@
-package UNO.controller.controllerComponent
+package UNO
+
+package controllerComponent
 
 import scala.swing.event.Event
 import scala.swing.Publisher
 
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
+import UNO._
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
 import UNO.stackComponent.stackBaseImp.Stack
 
 trait controllerInterface extends Publisher:

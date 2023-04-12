@@ -1,4 +1,6 @@
-package UNO.cardComponent
+package UNO
+
+package cardComponent
 
 trait CardInterface:
   def value: String

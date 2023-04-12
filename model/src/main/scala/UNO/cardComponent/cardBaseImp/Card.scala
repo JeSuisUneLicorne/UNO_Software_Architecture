@@ -1,4 +1,5 @@
-package UNO.cardComponent.cardBaseImp
+package UNO
+package cardComponent.cardBaseImp
 
 import UNO.cardComponent.CardInterface
 

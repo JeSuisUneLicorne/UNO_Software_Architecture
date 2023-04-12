@@ -1,20 +1,22 @@
-package UNO.controller.controllerComponent.controllerBaseImp
+package UNO.controllerComponent
+
+package controllerBaseImp
 
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import scala.swing.Publisher
 import scala.util.{Success, Failure}
 
+import UNO.GameState
 import UNO.UnoGameModule
-import UNO.controller.controllerComponent.*
-import UNO.model.GameState
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.stackComponent.stackBaseImp.Stack
+import UNO.controllerComponent.*
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.stackComponent.stackBaseImp.Stack
 import UNO.util.UndoManager
-import UNO.model.fileIOComponent.FileIOTrait
-import UNO.model.fileIOComponent.fileIOJsonImp.FileIO
-import UNO.controller.controllerComponent.GameStatus._
+import UNO.fileIOComponent.FileIOTrait
+import UNO.fileIOComponent.fileIOJsonImp.FileIO
+import UNO.controllerComponent.GameStatus._
 
 class Controller @Inject() extends controllerInterface with Publisher:
   var playername1 = "1"

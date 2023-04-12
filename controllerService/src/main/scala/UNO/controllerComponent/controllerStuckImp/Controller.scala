@@ -1,10 +1,12 @@
-package UNO.controller.controllerComponent.controllerStuckImp
+package UNO
 
-import UNO.aview.gui.SwingGui
-import UNO.controller.controllerComponent.controllerInterface
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.stackComponent.stackBaseImp.Stack
+package controllerComponent.controllerStuckImp
+
+import UNO.gui.SwingGui
+import UNO.controllerComponent.controllerInterface
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.stackComponent.stackBaseImp.Stack
 
 abstract class Controller extends controllerInterface:
   var playername1 = "Saitama"  //Konstantin: here all val -> override val -> not working

@@ -1,4 +1,6 @@
-package UNO.controller.controllerComponent
+package UNO
+
+package controllerComponent
 
 object GameStatus extends Enumeration :
   type GameStatus = Value

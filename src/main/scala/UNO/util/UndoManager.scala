@@ -1,4 +1,6 @@
-package UNO.util
+package UNO
+
+package util
 
 class UndoManager:
   private var undoStack: List[Command] = Nil

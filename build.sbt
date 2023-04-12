@@ -35,6 +35,8 @@ lazy val model = (project in file("model"))
   )
 
 lazy val userInterface = (project in file("userInterface"))
+  .dependsOn(controllerService)
+  .aggregate(controllerService)
   .settings(
     name := "UNO_userInterface",
     version := "0.1.0-SNAPSHOT",
@@ -42,6 +44,8 @@ lazy val userInterface = (project in file("userInterface"))
   )
 
 lazy val controllerService = (project in file("controllerService"))
+  .dependsOn(model)
+  .aggregate(model)
   .settings(
     name := "UNO_controllerService",
     version := "0.1.0-SNAPSHOT",

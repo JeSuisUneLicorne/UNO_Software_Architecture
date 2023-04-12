@@ -7,9 +7,10 @@ import play.api.libs.json.{JsValue, Json}
 import scala.io.Source
 
 import UNO.GameState
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.fileIOComponent.FileIOTrait
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.fileIOComponent.FileIOTrait
+import UNO.cardComponent.cardBaseImp.Card
 
 class FileIO extends FileIOTrait:
 

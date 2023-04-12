@@ -1,4 +1,5 @@
-package UNO.fileIOComponent.fileIOJsonImp
+package UNO
+package fileIOComponent.fileIOJsonImp
 
 import play.api.libs.json.{JsValue, Json}
 import scala.util.{Failure, Success, Try}
@@ -6,9 +7,9 @@ import scala.io.Source
 import java.io._
 
 import UNO.GameState
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.fileIOComponent.FileIOTrait
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.fileIOComponent.FileIOTrait
 
 class FileIO extends FileIOTrait:
 

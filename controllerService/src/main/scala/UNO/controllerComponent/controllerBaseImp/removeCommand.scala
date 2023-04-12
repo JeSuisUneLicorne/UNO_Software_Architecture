@@ -1,7 +1,9 @@
-package UNO.controller.controllerComponent.controllerBaseImp
+package UNO.controllerComponent
 
-import UNO.controller.controllerComponent.controllerInterface
-import UNO.model.cardComponent.cardBaseImp.Card
+package controllerBaseImp
+
+import UNO.controllerComponent.controllerInterface
+import UNO.cardComponent.cardBaseImp.Card
 import UNO.util.Command
 
 

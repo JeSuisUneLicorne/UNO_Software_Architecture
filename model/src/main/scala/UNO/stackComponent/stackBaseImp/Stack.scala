@@ -1,9 +1,12 @@
-package UNO.stackComponent.stackBaseImp
+package UNO
+
+package stackComponent.stackBaseImp
 
 import scala.util.{Failure, Random, Success, Try}
 
-import UNO.model.cardComponent.cardBaseImp.Card
-import UNO.model.stackComponent.StackInterface
+import UNO.cardComponent.cardBaseImp.Card
+import UNO.stackComponent.StackInterface
+import UNO.cardComponent.cardBaseImp.Card
 
 case class Stack(stackCards: List[Card]) extends StackInterface:
   def initStack(): Stack =
