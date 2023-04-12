@@ -1,6 +1,6 @@
-package UNO.util
+package UNO.controllerComponent.util
 
-import UnoGame.Controller
+import UNO.UnoGame.Controller
 
 trait Event
 

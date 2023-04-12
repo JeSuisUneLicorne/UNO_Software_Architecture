@@ -2,7 +2,6 @@ package UNO
 
 package controllerComponent.controllerStuckImp
 
-import UNO.gui.SwingGui
 import UNO.controllerComponent.controllerInterface
 import UNO.PlayerComponent.playerBaseImp.Player
 import UNO.cardComponent.cardBaseImp.Card

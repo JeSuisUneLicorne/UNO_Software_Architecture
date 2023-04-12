@@ -1,4 +1,4 @@
-package UNO.util
+package UNO.controllerComponent.util
 
 object Strategy:
   var strategy = false

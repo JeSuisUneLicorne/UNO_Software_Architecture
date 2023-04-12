@@ -19,8 +19,8 @@ lazy val commonSettings = Seq(
 
 lazy val root = project
   .in(file("."))
-  .dependsOn(model, userInterface, controllerService)
-  .aggregate(model, userInterface, controllerService)
+  .dependsOn(userInterface, controllerService)
+  .aggregate(userInterface, controllerService)
   .settings(
     name := "UNO",
     version := "0.1.0-SNAPSHOT",
