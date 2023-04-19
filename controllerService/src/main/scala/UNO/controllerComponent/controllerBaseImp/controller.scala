@@ -8,12 +8,12 @@ import scala.swing.Publisher
 import scala.util.{Success, Failure}
 
 import UNO.GameState
-import UNO.UnoGameModule
+import UNO.controllerComponent.UnoGameModule
 import UNO.controllerComponent.*
 import UNO.PlayerComponent.playerBaseImp.Player
 import UNO.cardComponent.cardBaseImp.Card
 import UNO.stackComponent.stackBaseImp.Stack
-import UNO.util.UndoManager
+import UNO.controllerComponent.UndoManager
 import UNO.fileIOComponent.FileIOTrait
 import UNO.fileIOComponent.fileIOJsonImp.FileIO
 import UNO.controllerComponent.GameStatus._
@@ -32,7 +32,7 @@ class Controller @Inject() extends controllerInterface with Publisher:
   var gameState: GameState = GameState(playerList, playStack2)
   //val injector = Guice.createInjector(new UnoGameModule)
   //val fileIo = injector.getInstance(classOf[FileIO])
-  def Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
+  //def Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
 
 

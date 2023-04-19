@@ -1,4 +1,5 @@
-package UNO.controllerComponent.util
+package UNO
+package util
 
 object State:
   var state = gameStartEvent().gameStart

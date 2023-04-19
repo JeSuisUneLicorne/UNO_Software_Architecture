@@ -1,9 +1,8 @@
-package UNO
+package UNO.controllerComponent
 
 import com.google.inject.AbstractModule
-import net.codingwell.scalaguice.ScalaModule
-import controller.controllerComponent._
-import model.fileIOComponent._
+import UNO.controllerComponent.controllerInterface
+import UNO.fileIOComponent._
 
 class UnoGameModule extends AbstractModule {
 

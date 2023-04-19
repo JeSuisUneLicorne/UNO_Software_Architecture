@@ -1,8 +1,10 @@
 package UNO
-
+package ui
 package gui
 
-import UNO.CardPanel
+import UNO.ui.gui.CardPanel
+import UNO.controllerComponent.controllerInterface
+import UNO.controllerComponent.controllerBaseImp.*
 
 import java.awt.Image
 import javax.swing.ImageIcon

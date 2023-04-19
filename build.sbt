@@ -19,10 +19,19 @@ lazy val commonSettings = Seq(
 
 lazy val root = project
   .in(file("."))
-  .dependsOn(userInterface, controllerService)
-  .aggregate(userInterface, controllerService)
+  .dependsOn(model, controllerService)
+  .aggregate(model, controllerService)
   .settings(
     name := "UNO",
+    version := "0.1.0-SNAPSHOT",
+    commonSettings
+  )
+
+  lazy val controllerService = (project in file("controllerService"))
+  .dependsOn(model)
+  .aggregate(model)
+  .settings(
+    name := "UNO_controllerService",
     version := "0.1.0-SNAPSHOT",
     commonSettings
   )
@@ -34,15 +43,17 @@ lazy val model = (project in file("model"))
     commonSettings
   )
 
+/*
 lazy val userInterface = (project in file("userInterface"))
-  .dependsOn(controllerService)
-  .aggregate(controllerService)
   .settings(
     name := "UNO_userInterface",
     version := "0.1.0-SNAPSHOT",
     commonSettings
   )
 
+  */
+
+  /*
 lazy val controllerService = (project in file("controllerService"))
   .dependsOn(model)
   .aggregate(model)
@@ -51,7 +62,7 @@ lazy val controllerService = (project in file("controllerService"))
     version := "0.1.0-SNAPSHOT",
     commonSettings
   )
-
+*/
 /*
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15"
 

@@ -3,8 +3,8 @@ package UNO.controllerComponent
 package controllerBaseImp
 
 import UNO.controllerComponent.controllerInterface
-import UNO.util.Command
-
+//import util.Command
+import UNO.controllerComponent.Command
 
 class SetCommand(controller: controllerInterface) extends Command:
   override def doStep(): Unit =

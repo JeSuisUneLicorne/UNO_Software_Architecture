@@ -1,5 +1,5 @@
 package UNO
-
+package ui
 package gui
 
 import UNO.controllerComponent.controllerBaseImp.endStates

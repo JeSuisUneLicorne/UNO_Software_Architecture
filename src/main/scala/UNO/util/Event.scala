@@ -1,8 +1,11 @@
-package UNO.controllerComponent.util
+package UNO
+package util
 
 import UNO.UnoGame.Controller
 
+
 trait Event
+
 
 case class instructionEvent() extends Event:
   def instruction: String =

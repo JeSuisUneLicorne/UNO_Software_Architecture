@@ -1,6 +1,7 @@
 package UNO
+package controllerComponent
 
-package util
+import UNO.controllerComponent.Command
 
 class UndoManager:
   private var undoStack: List[Command] = Nil

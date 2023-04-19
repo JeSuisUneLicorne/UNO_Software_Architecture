@@ -4,9 +4,9 @@ import scala.io.StdIn.readLine
 import com.google.inject.Guice
 import util.{State, gameStatsEvent, instructionEvent}
 import controllerComponent.controllerInterface
-import UNO.aview.TUI
-import UNO.gui.SwingGui
-import userInterface._
+import UNO.ui.TUI
+import UNO.ui.gui.SwingGui
+import controllerComponent.UnoGameModule
 
 object UnoGame:
   val Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])

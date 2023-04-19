@@ -1,4 +1,5 @@
 package UNO
+package ui
 
 import UNO.controllerComponent.controllerBaseImp.updateStates
 import UNO.controllerComponent.controllerInterface

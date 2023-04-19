@@ -1,6 +1,5 @@
 package UNO
-
-package util
+package controllerComponent
 
 trait Command:
   def doStep(): Unit
