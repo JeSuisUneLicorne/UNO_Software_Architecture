@@ -65,7 +65,7 @@ class CardPanel(list:Int, index: Int ,controller:controllerInterface) extends Fl
             controller.publish(new endStates)
               // UnoGame.UNO.gui.redraw2
           else if !Strategy.handle(removeCardEvent(index),index) then
-            null
+            print("bla") //null TODO: Fix this
           else 
             controller.removeCard(index)
             controller.playerList = controller.playerList.reverse
