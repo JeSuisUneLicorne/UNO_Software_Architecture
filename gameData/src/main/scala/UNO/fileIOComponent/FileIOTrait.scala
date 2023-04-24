@@ -1,5 +1,4 @@
-package UNO
-package fileIOComponent
+package UNO.fileIOComponent
 
 import UNO.GameState
 

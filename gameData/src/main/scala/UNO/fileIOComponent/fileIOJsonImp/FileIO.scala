@@ -1,5 +1,5 @@
-package UNO
-package fileIOComponent.fileIOJsonImp
+package UNO.fileIOComponent
+package fileIOJsonImp
 
 import play.api.libs.json.{JsValue, Json}
 import scala.util.{Failure, Success, Try}

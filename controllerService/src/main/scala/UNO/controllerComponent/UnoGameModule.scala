@@ -2,7 +2,8 @@ package UNO.controllerComponent
 
 import com.google.inject.AbstractModule
 import UNO.controllerComponent.controllerInterface
-import UNO.fileIOComponent.* 
+import UNO.fileIOComponent._
+import UNO.fileIOComponent.FileIOTrait
 
 class UnoGameModule extends AbstractModule {
 
