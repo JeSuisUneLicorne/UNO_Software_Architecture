@@ -24,14 +24,24 @@ lazy val root = project
     commonSettings
   )
 
-  lazy val controllerService = (project in file("controllerService"))
-  .dependsOn(model)
-  .aggregate(model)
+lazy val controllerService = (project in file("controllerService"))
+  .dependsOn(model, gameData)
+  .aggregate(model, gameData)
   .settings(
     name := "UNO_controllerService",
     version := "0.1.0-SNAPSHOT",
     commonSettings
   )
+
+lazy val gameData = (project in file("gameData"))
+  .dependsOn(model)
+  .aggregate(model)
+  .settings(
+    name := "UNO_gameData",
+    version := "0.1.0-SNAPSHOT",
+    commonSettings
+  )
+
 
 lazy val model = (project in file("model"))
   .settings(

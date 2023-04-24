@@ -1,4 +1,5 @@
-package UNO.fileIOComponent.fileIOXmlImp
+package UNO
+package fileIOComponent.fileIOXmlImp
 
 import java.io.{File, PrintWriter}
 import scala.xml.{Elem, PrettyPrinter}
