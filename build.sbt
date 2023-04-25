@@ -1,4 +1,6 @@
 val scalaVersion3 = "3.2.2"
+val AkkaVersion = "2.7.0"
+val AkkaHttpVersion = "10.5.1"
 
 lazy val commonSettings = Seq(
   scalaVersion := scalaVersion3,
@@ -11,7 +13,10 @@ lazy val commonSettings = Seq(
   libraryDependencies += ("net.codingwell" %% "scala-guice" % "5.1.1")
     .cross(CrossVersion.for3Use2_13),
   libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC7",
-  libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
+  libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0",
+  libraryDependencies += "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
+  libraryDependencies += "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
+  libraryDependencies += "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
 )
 
 lazy val root = project

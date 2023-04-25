@@ -17,6 +17,18 @@ import UNO.controllerComponent.UndoManager
 import UNO.fileIOComponent.FileIOTrait
 import UNO.fileIOComponent.fileIOJsonImp.FileIO
 import UNO.controllerComponent.GameStatus._
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
+import scala.concurrent.ExecutionContextExecutor
+import akka.http.scaladsl.model.HttpMethods
+import scala.concurrent.Future
+import akka.http.scaladsl.model.HttpResponse
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpRequest
+import UNO.fileIOComponent.gameDataService.gameDataAPI
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
 class Controller @Inject() extends controllerInterface with Publisher:
   var playername1 = "1"
@@ -34,7 +46,7 @@ class Controller @Inject() extends controllerInterface with Publisher:
   //val fileIo = injector.getInstance(classOf[FileIO])
   //def Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
-
+  val gameDataServer = "http://localhost:8080/fileIO"
 
   def setDefault(): Unit =
     stackCard = initStackCard()
@@ -103,34 +115,37 @@ class Controller @Inject() extends controllerInterface with Publisher:
   //   undoManager.redoStep()
   //   publish(new updateStates)
 
+  // save before rest
+  //override def save: Unit =
+  //  fileIo.save(GameState(playerList, playStack2))
   override def save: Unit =
-    fileIo.save(GameState(playerList, playStack2))
+    implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+    print("inside save (Controller)")
+    val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.POST,
+      uri = gameDataServer + "/save",
+      entity = fileIo.save(gameState).toString()
+    ))
 
-  // override def load: Unit =
-  //   gameState = fileIo.load
-  //   playerList = gameState.playerList
-  //   stackCard = gameState.getstackCard()
-  //   playStack2 = gameState.playStack
-  //   publish(new updateStates)
-
-  override def load:String=
-    val gameState = fileIo.load
-    gameState match {
-      case Success(option) =>
-        option.match {
-          case Some(lists) =>
-            val(playerliste, playstackonthefield) = lists
-            playerList = playerliste
-            playStack2 = playstackonthefield
-            gameStatus = LOADED
-            "load success"
-          case None=>
-            gameStatus = COULD_NOT_LOAD
-            "load not success"
-        }
-      case Failure(e) =>
-        gameStatus = COULD_NOT_LOAD
-        "load not success"
-    }
-    publish(new updateStates)
-    "load"
+  override def loadd: String = 
+    implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+    print("inside save (ControllerLOad)")
+    val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      uri = gameDataServer + "/load"
+    ))
+      response.onComplete {
+        case Failure(_) => sys.error("No Json file")
+        case Success(value) =>
+          { 
+          Unmarshal(value.entity).to[String].onComplete {
+            case Failure(_) => sys.error("Couldnt unmarshal")
+            case Success(value) => val json: JsValue = Json.parse(value)
+              fileIo.load()
+              //publish 
+            }
+          }
+      }
