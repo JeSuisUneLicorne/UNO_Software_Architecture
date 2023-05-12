@@ -1,12 +1,11 @@
-package UNO.controllerComponent
-
+package controllerComponent
 package controllerBaseImp
 
 import UNO.controllerComponent.controllerInterface
 import UNO.cardComponent.cardBaseImp.Card
 //import util.Command
-import UNO.controllerComponent.Command
-
+//import UNO.commandComponent.Command
+import command.commandComponent.Command
 
 
 class RemoveCommand(handindex: Int, controller: controllerInterface) extends Command:

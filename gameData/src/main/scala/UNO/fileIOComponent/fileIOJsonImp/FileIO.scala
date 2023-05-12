@@ -1,4 +1,5 @@
-package UNO.fileIOComponent.fileIOJsonImp
+package UNO.fileIOComponent
+package fileIOJsonImp
 
 import play.api.libs.json.{JsValue, Json}
 import scala.util.{Failure, Success, Try}
@@ -63,12 +64,11 @@ class FileIO extends FileIOTrait:
     List(Card((json \ "gameState" \ "playStackValue").as[String],
       (json \ "gameState" \ "playStackColor").as[String]))
 
-  override def save(gameState: GameState): String =
+  override def save(gameState: GameState): Unit =
     val pw = new PrintWriter(new File("gamestate.json"))
     pw.write(Json.prettyPrint(gameStateToJson(gameState)))
     pw.close
-    val JsonString = Json.prettyPrint(gameStateToJson(gameState))
-    JsonString
+    Json.prettyPrint(gameStateToJson(gameState))
 
   def gameStateToJson(gameState: GameState) =
     Json.obj(

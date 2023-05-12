@@ -1,15 +1,16 @@
-package UNO
-package controllerComponent
+package command
+package commandComponent
 
-import UNO.controllerComponent.Command
+//import UNO.controllerComponent.commandComponent.Command
 
 class UndoManager:
   private var undoStack: List[Command] = Nil
   private var redoStack: List[Command] = Nil
 
-  def doStep(command: Command): Unit =
-    undoStack = command :: undoStack
-    command.doStep()
+  def doStep(command: String): Unit =
+    //undoStack = command :: undoStack
+    //command.doStep()
+    redoStep()
 
   def redoStep(): Unit = unitfiedStep(false)
   def undoStep(): Unit = unitfiedStep(true)

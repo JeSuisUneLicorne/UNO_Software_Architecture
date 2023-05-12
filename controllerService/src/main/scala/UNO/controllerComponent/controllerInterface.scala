@@ -27,7 +27,7 @@ trait controllerInterface extends Publisher:
   def redoGet: Unit
   def stackEmpty(): Stack
   def save: Unit
-  def load: String  //def load: Unit
+  def load: Unit  //def load: Unit
   def setDefault(): Unit
 
   class updateState extends Event
