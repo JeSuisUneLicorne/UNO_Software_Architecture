@@ -1,19 +1,22 @@
-package controllerComponent
-package controllerBaseImp
+package command
+package commandComponent
 
 import UNO.controllerComponent.controllerInterface
 //import util.Command
 import command.commandComponent.Command
 
 case class SetCommand(controller: controllerInterface) extends Command:
-  override def doStep(): Unit =
+  override def doStep(): controllerInterface =
     controller.playerList = List(controller.playerList(1), controller.playerList(0).setPlayerCards(controller.stackCard.getCardFromStack()))
     controller.stackCard = controller.stackCard.removeCard()
+    controller
 
-  override def undoStep(): Unit =
+  override def undoStep(): controllerInterface =
     controller.playerList = List(controller.playerList(1).removePlayerCards(0), controller.playerList(0))
     controller.stackCard = controller.stackCard.pullCards(List(controller.playerList(1).playerCards(0)))
+    controller
 
-  override def redoStep(): Unit =
+  override def redoStep(): controllerInterface =
     controller.playerList = List(controller.playerList(1), controller.playerList(0).setPlayerCards(controller.stackCard.getCardFromStack()))
     controller.stackCard = controller.stackCard.removeCard()
+    controller

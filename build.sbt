@@ -18,7 +18,8 @@ lazy val commonSettings = Seq(
   libraryDependencies += "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
   libraryDependencies += "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
   libraryDependencies += "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
-  libraryDependencies += "io.spray" % "spray-json_2.12" % "1.3.6"
+  libraryDependencies += "io.spray" % "spray-json_2.12" % "1.3.6",
+  libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.32" exclude("org.slf4j", "slf4j-log4j12")
 )
 
 lazy val circeSettings =  libraryDependencies ++= Seq(
@@ -29,8 +30,8 @@ lazy val circeSettings =  libraryDependencies ++= Seq(
 
 lazy val root = project
   .in(file("."))
-  .dependsOn(model, controllerService)
-  .aggregate(model, controllerService)
+  .dependsOn(model, controllerService, command)
+  .aggregate(model, controllerService, command)
   .settings(
     name := "UNO",
     version := "0.1.0-SNAPSHOT",
@@ -39,8 +40,8 @@ lazy val root = project
   )
 
 lazy val controllerService = (project in file("controllerService"))
-  .dependsOn(model, gameData, command)
-  .aggregate(model, gameData, command)
+  .dependsOn(model, gameData)
+  .aggregate(model, gameData)
   .settings(
     name := "controllerService",
     version := "0.1.0-SNAPSHOT",
@@ -66,9 +67,10 @@ lazy val model = (project in file("model"))
   )
 
 lazy val command = (project in file("command"))
-  .dependsOn(model)
+  .dependsOn(model, controllerService)
   .settings(
     name := "command",
     version := "0.1.0-SNAPSHOT",
-    commonSettings
+    commonSettings,
+    circeSettings
   )

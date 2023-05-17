@@ -18,7 +18,13 @@ object fileIOAPI {
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
     
-    val routes: String = "test"
+    val routes: String = 
+      """
+      FileIO-REST-Service
+      Available routes:
+      GET: /fileIO/load
+      POST: /fileIO/save
+      """
 
     val route = concat (
       pathSingleSlash {
@@ -32,7 +38,6 @@ object fileIOAPI {
       path("fileIO" / "save") {
         post {
           entity(as[String]) { game =>
-            print("inside save")
             fileIOJsonImp.save(game)
             complete("game saved")
           }
@@ -42,7 +47,7 @@ object fileIOAPI {
 
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
 
-    println(s"Server now online. Please navigate to http://localhost:8080/fileIO\nPress RETURN to stop...")
+    //println(s"Server now online. Please navigate to http://localhost:8080/fileIO\nPress RETURN to stop...")
     //StdIn.readLine() // let it run until user presses return
     //bindingFuture
     //  .flatMap(_.unbind()) // trigger unbinding from the port

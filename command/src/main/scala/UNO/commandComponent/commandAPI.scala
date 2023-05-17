@@ -9,7 +9,7 @@ import akka.http.scaladsl.server.Directives._
 import scala.io.StdIn
 import scala.concurrent.ExecutionContextExecutor
 import com.google.inject.Guice
-
+import play.api.libs.json.JsValue
 
 object commandAPI {
   @main def main(): Unit =
@@ -20,7 +20,14 @@ object commandAPI {
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
 
-    val routes = "bla"
+    val routes =
+      """
+      Command-REST-Service
+      Available routes:
+      POST: /command/doStep
+      GET: /command/undo
+      GET: /command/redo
+      """
 
     val route = concat (
       pathSingleSlash {
@@ -29,31 +36,28 @@ object commandAPI {
       path("command" / "doStep") {
         post {
           entity(as[String]) { command =>
-            //complete(HttpEntity(ContentTypes.`application/json`, UndoManager.doStep(command)))
-            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, routes))
+            complete(HttpEntity(ContentTypes.`application/json`, UndoManager.doStep(command)))
           }
         }
       },
-//      path("command" / "undo") {
-//        get {
-//            complete("game saved")
-//          }
-//        }
-//      path("command" / "redo") {
-//        get {
-//
-//        }
-//      }
+      path("command" / "undo") {
+        get {
+          complete(HttpEntity(ContentTypes.`application/json`, UndoManager.undoStep()))
+          }
+        },
+      path("command" / "redo") {
+        get {
+          complete(HttpEntity(ContentTypes.`application/json`, UndoManager.redoStep()))
+        }
+      }
     )
 
-    val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
+    val bindingFuture = Http().newServerAt("localhost", 8081).bind(route)
 
-    println(s"Server now online. Please navigate to http://localhost:8081/command\nPress RETURN to stop...")
+    //println(s"Server now online. Please navigate to http://localhost:8081/command\nPress RETURN to stop...")
     //StdIn.readLine() // let it run until user presses return
     //bindingFuture
     //  .flatMap(_.unbind()) // trigger unbinding from the port
     //  .onComplete(_ => system.terminate()) // and shutdown when done
-
-
 }
 

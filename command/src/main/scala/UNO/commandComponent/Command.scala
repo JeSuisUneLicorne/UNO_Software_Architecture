@@ -1,9 +1,11 @@
 package command
 package commandComponent
 
-trait Command:
-  def doStep(): Unit
+import UNO.controllerComponent.controllerInterface
 
-  def undoStep(): Unit
+trait Command:
+  def doStep(): controllerInterface
+
+  def undoStep(): controllerInterface
   
-  def redoStep(): Unit
+  def redoStep(): controllerInterface

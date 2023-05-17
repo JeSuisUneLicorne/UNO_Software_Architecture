@@ -16,7 +16,7 @@ import UNO.controllerComponent.*
 import UNO.PlayerComponent.playerBaseImp.Player
 import UNO.cardComponent.cardBaseImp.Card
 import UNO.stackComponent.stackBaseImp.Stack
-import command.commandComponent.UndoManager
+//import command.commandComponent.UndoManager
 import UNO.controllerComponent.GameStatus._
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
@@ -31,11 +31,9 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import scala.util.Try
-import command.commandComponent.UndoManager
-import command.commandComponent.Command
-import controllerComponent.controllerBaseImp.SetCommand
+import scala.util.matching.Regex
 
-class Controller @Inject() extends controllerInterface with Publisher:
+case class Controller @Inject()() extends controllerInterface with Publisher:
   var playername1 = "1"
   var playername2 = "2"
   var stackCard = initStackCard()
@@ -45,11 +43,11 @@ class Controller @Inject() extends controllerInterface with Publisher:
   var unoCall = false
   var gameStatus: GameStatus = IDLE
 
-  private val undoManager = new UndoManager
+  //private val undoManager = new UndoManager
   var gameState: GameState = GameState(playerList, playStack2)
   //val injector = Guice.createInjector(new UnoGameModule)
   //val fileIo = injector.getInstance(classOf[FileIO])
-  //def Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
+  def Controller: controllerInterface = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   //val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
   val gameDataServer = "http://localhost:8080/fileIO"
   val commandServer = "http://localhost:8081/command"
@@ -91,49 +89,213 @@ class Controller @Inject() extends controllerInterface with Publisher:
       starthand.init.reverse
     List(Player(playername1,startHand()),Player(playername2,startHand()))
 
-//  def getCard(): Unit =
-//    stackCard = stackEmpty()
-//    undoManager.doStep(new SetCommand(this))
-//    publish(new updateStates)
-
   def getCard(): Unit =
     stackCard = stackEmpty()
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
-
     val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
       method = HttpMethods.POST,
       uri = commandServer + "/doStep",
-      entity = doStepJson()
-    ))
+      entity = doSetCommandJson(this)
+      ))
 
-  def doStepJson(): String = {
-    implicit val setCommandEncoder: Encoder[SetCommand] = Encoder[Command].contramap(identity)
-    implicit val setCommandDecoder: Decoder[SetCommand] = Decoder[Command].map(_.asInstanceOf[SetCommand])
-    
-  }
+    response.onComplete{
+      case Failure(_) => sys.error("No Json")
+      case Success(value) => {
+        Unmarshal(value.entity).to[String].onComplete{
+          case Failure(_) => sys.error("Unmarshaling failed")
+          case Success(value) => {
+            val json: JsValue = Json.parse(value)
+                val playerList1 = (json \ "playerList1").as[String]
+                val playerList2 = (json \ "playerList2").as[String]
+                val stackCard = (json \ "stackCard").as[String]
+                val player1Cards = parseCardList(playerList1)
+                val player2Cards = parseCardList(playerList2)
+                val player1 = Player("1", player1Cards)
+                val player2 = Player("2", player2Cards)
+                val players : List[Player] = List(player1, player2)
+                
+                val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+                val stackCards: List[Card] = cardRegex
+                  .findAllMatchIn(stackCard)
+                  .map(m => Card(m.group(1), m.group(2)))
+                  .toList
+                val newStack = Stack(stackCards)
+                
+                this.playerList = players
+                this.stackCard = newStack
+                publish(new updateStates)
+          }
+        }
+      }
+    }
 
-    //undoManager.doStep(new SetCommand(this))
-    publish(new updateStates)
+  def parseCardList(cardListString: String): List[Card] =
+    val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+    cardRegex.findAllMatchIn(cardListString).map { matchResult =>
+      val value = matchResult.group(1)
+      val color = matchResult.group(2)
+      Card(value, color)
+    }.toList
 
+  def doSetCommandJson(controller: controllerInterface): String =
+    Json.obj(
+      "playerList1" -> controller.playerList(0).toString,
+      "playerList2" -> controller.playerList(1).toString,
+      "stackCard" -> controller.stackCard.toString,
+      "command" -> "set",
+      "handindex" -> 1.toString
+      ).toString
 
   def removeCard(handindex: Int): Unit =
     stackCard = stackEmpty()
+    implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+    val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+      method = HttpMethods.POST,
+      uri = commandServer + "/doStep",
+      entity = doRemoveJson(this, handindex)
+      ))
+    response.onComplete{
+      case Failure(_) => sys.error("No Json")
+      case Success(value) => {
+        Unmarshal(value.entity).to[String].onComplete{
+          case Failure(_) => sys.error("Unmarshaling failed")
+          case Success(value) => {
+            val json: JsValue = Json.parse(value)
+            val playerList1 = (json \ "playerList1").as[String]
+            val playerList2 = (json \ "playerList2").as[String]
+            val stackCard = (json \ "stackCard").as[String]
+            val player1Cards = parseCardList(playerList1)
+            val player2Cards = parseCardList(playerList2)
+            val player1 = Player("1", player1Cards)
+            val player2 = Player("2", player2Cards)
+            val players : List[Player] = List(player1, player2)
+            
+            val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+            val stackCards: List[Card] = cardRegex
+              .findAllMatchIn(stackCard)
+              .map(m => Card(m.group(1), m.group(2)))
+              .toList
+            val newStack = Stack(stackCards)
+            
+            this.playerList = players
+            this.stackCard = newStack
+            publish(new updateStates)
+          }
+        }
+      }
+    }
+
+    
+    //old removeCard
+    //stackCard = stackEmpty()
     //undoManager.doStep(new RemoveCommand(handindex:Int, this))
-    unoCall = false
-    publish(new updateStates)
+    //unoCall = false
+    //publish(new updateStates)
+
+
+  def doRemoveJson(controller: controllerInterface, handindex: Int): String =
+    Json.obj(
+      "playerList1" -> controller.playerList(0).toString,
+      "playerList2" -> controller.playerList(1).toString,
+      "stackCard" -> controller.stackCard.toString,
+      "command" -> "remove",
+      "handindex" -> handindex.toString
+      ).toString
 
   def undoGet: Unit = undoRedoget(true)
   def redoGet: Unit = undoRedoget(false)
 
   def undoRedoget(value: Boolean): Unit =
     if(value == true)
+      implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+      val executionContext: ExecutionContextExecutor = system.executionContext
+      given ExecutionContextExecutor = executionContext
+      val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+        method = HttpMethods.GET,
+        uri = commandServer + "/undo",
+        ))
+      response.onComplete{
+        case Failure(_) => sys.error("No Json")
+        case Success(value) => {
+          Unmarshal(value.entity).to[String].onComplete{
+            case Failure(_) => sys.error("Unmarshaling failed")
+            case Success(value) => {
+              val json: JsValue = Json.parse(value)
+              val playerList1 = (json \ "playerList1").as[String]
+              val playerList2 = (json \ "playerList2").as[String]
+              val stackCard = (json \ "stackCard").as[String]
+              val player1Cards = parseCardList(playerList1)
+              val player2Cards = parseCardList(playerList2)
+              val player1 = Player("1", player1Cards)
+              val player2 = Player("2", player2Cards)
+              val players : List[Player] = List(player1, player2)
+              
+              val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+              val stackCards: List[Card] = cardRegex
+                .findAllMatchIn(stackCard)
+                .map(m => Card(m.group(1), m.group(2)))
+                .toList
+              val newStack = Stack(stackCards)
+              
+              this.playerList = players
+              this.stackCard = newStack
+              publish(new updateStates)
+            }
+          }
+        }
+      }
+
+      // OLD UNDO
       //undoManager.undoStep()
-      publish(new updateStates)
+      //publish(new updateStates)
     else
+      implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+      val executionContext: ExecutionContextExecutor = system.executionContext
+      given ExecutionContextExecutor = executionContext
+      val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
+        method = HttpMethods.GET,
+        uri = commandServer + "/redo",
+        ))
+      response.onComplete{
+        case Failure(_) => sys.error("No Json")
+        case Success(value) => {
+          Unmarshal(value.entity).to[String].onComplete{
+            case Failure(_) => sys.error("Unmarshaling failed")
+            case Success(value) => {
+              val json: JsValue = Json.parse(value)
+              val playerList1 = (json \ "playerList1").as[String]
+              val playerList2 = (json \ "playerList2").as[String]
+              val stackCard = (json \ "stackCard").as[String]
+              val player1Cards = parseCardList(playerList1)
+              val player2Cards = parseCardList(playerList2)
+              val player1 = Player("1", player1Cards)
+              val player2 = Player("2", player2Cards)
+              val players : List[Player] = List(player1, player2)
+              
+              val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+              val stackCards: List[Card] = cardRegex
+                .findAllMatchIn(stackCard)
+                .map(m => Card(m.group(1), m.group(2)))
+                .toList
+              val newStack = Stack(stackCards)
+              
+              this.playerList = players
+              this.stackCard = newStack
+              publish(new updateStates)
+            }
+          }
+        }
+      }
+
+      
+      // OLD REDO
       //undoManager.redoStep()
-      publish(new updateStates)
+      //publish(new updateStates)
+
   override def save: Unit =
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     val executionContext: ExecutionContextExecutor = system.executionContext
@@ -167,10 +329,8 @@ class Controller @Inject() extends controllerInterface with Publisher:
                   case Success(option) =>
                     option.match {
                       case Some(lists) =>
-                        //print("playerlist before: " + playerList)
                         val(playerliste, playstackonthefield) = lists
                         playerList = playerliste
-                        //print("new Playerlist :" + playerList)
                         playStack2 = playstackonthefield
                         gameStatus = LOADED
                         "load success"
@@ -183,7 +343,6 @@ class Controller @Inject() extends controllerInterface with Publisher:
                     "load not success"
                 }
               print(gameStatus)
-              //print("updateStates: \n")
               publish(new updateStates)
               "load"
             }
@@ -226,7 +385,6 @@ class Controller @Inject() extends controllerInterface with Publisher:
       newCard:: returnList(Card(playerValueIndex(index), playerColorIndex(index)),oldList, index + 1, playerValueIndex, playerColorIndex)
 
   def gameStateToJson(): String =
-    print("Inside gameStatetoJson" + gameState.playerList)
     Json.obj(
       "gameState" -> Json.obj(
         "playerListName" -> gameState.playerList.map(x => x.name),
