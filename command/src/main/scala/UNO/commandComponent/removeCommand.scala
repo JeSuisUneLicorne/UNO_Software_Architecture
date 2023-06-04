@@ -1,10 +1,8 @@
 package command
 package commandComponent
 
-import UNO.controllerComponent.controllerInterface
-import UNO.cardComponent.cardBaseImp.Card
-//import util.Command
-//import UNO.commandComponent.Command
+import command.commandComponent.controller.controllerInterface
+import command.commandComponent.model.cardComponent.cardBaseImp.Card
 import command.commandComponent.Command
 
 

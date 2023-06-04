@@ -1,4 +1,5 @@
-package UNO.fileIOComponent.gameDataService
+package UNO.fileIOComponent
+package gameDataService
 
 import java.io._
 import play.api.libs.json.{JsValue, Json}

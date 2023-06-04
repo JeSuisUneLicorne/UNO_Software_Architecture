@@ -1,3 +1,4 @@
+/*
 package UNO.fileIOComponent
 
 import UNO.GameState
@@ -12,3 +13,4 @@ trait FileIOTrait:
   def load:Try[Option[(List[Player],List[Card])]] //def load: UNO.GameState
 
   def save(gameState:GameState): Unit
+*/

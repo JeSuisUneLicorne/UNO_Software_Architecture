@@ -10,9 +10,10 @@ import scala.io.StdIn
 import scala.concurrent.ExecutionContextExecutor
 import com.google.inject.Guice
 import play.api.libs.json.JsValue
+import scala.util.Success
+import scala.util.Failure
 
 object commandAPI {
-  @main def main(): Unit =
 
     // needed to run the route
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
@@ -52,12 +53,19 @@ object commandAPI {
       }
     )
 
-    val bindingFuture = Http().newServerAt("localhost", 8081).bind(route)
+    val bindingFuture = Http().newServerAt("0.0.0.0", 8081).bind(route)
 
-    //println(s"Server now online. Please navigate to http://localhost:8081/command\nPress RETURN to stop...")
-    //StdIn.readLine() // let it run until user presses return
-    //bindingFuture
-    //  .flatMap(_.unbind()) // trigger unbinding from the port
-    //  .onComplete(_ => system.terminate()) // and shutdown when done
+    bindingFuture.onComplete{
+      case Success(value) => {
+        println(s"Server now online. Please navigate to http://localhost:8081/command\nPress RETURN to stop...")
+        StdIn.readLine() // let it run until user presses return
+        bindingFuture
+          .flatMap(_.unbind()) // trigger unbinding from the port
+          .onComplete(_ => system.terminate()) // and shutdown when done
+      }
+      case Failure(exception) => {
+        println("Command-Rest-Server could not be started! Error: " + exception + "\n")
+      }
+    }
 }
 

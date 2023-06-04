@@ -1,0 +1,48 @@
+version: "4.19.0"
+
+services:
+  gameData:
+    image: game-data-service
+    build:
+      context: ./gameData/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    container_name: gameData_service
+    environment:
+      GAMEDATA_SERVICE_HOST: gameData
+      GAMEDATA_SERVICE_PORT: 8080
+    tty: true
+  command:
+    image: command-service
+    build:
+      context: ./command/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8081:8081"
+    stdin_open: true
+    container_name: command_service
+    environment:
+      COMMAND_SERVICE_HOST: command
+      COMMAND_SERVICE_PORT: 8081
+    tty: true
+
+  main:
+    image: uno-service
+    build:
+      context: ./src
+      dockerfile: ./Dockerfile
+    stdin_open: true
+    container_name: uno_service
+    depends_on:
+      - gameData
+      - command
+    #volumes:
+    #  - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      #DISPLAY: $DISPLAY
+      GAMEDATA_SERVICE_HOST: gameData
+      GAMEDATA_SERVICE_PORT: 8080
+      COMMAND_SERVICE_PORT: 8081
+      COMMAND_SERVICE_HOST: command

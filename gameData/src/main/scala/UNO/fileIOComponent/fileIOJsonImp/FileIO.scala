@@ -1,3 +1,4 @@
+/*
 package UNO.fileIOComponent
 package fileIOJsonImp
 
@@ -82,4 +83,4 @@ class FileIO extends FileIOTrait:
         "playStackColor" -> gameState.playStack(0).color
       )
     )
-  
+*/

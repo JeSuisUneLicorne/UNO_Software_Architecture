@@ -9,9 +9,10 @@ import akka.http.scaladsl.server.Directives._
 import scala.io.StdIn
 import scala.concurrent.ExecutionContextExecutor
 import com.google.inject.Guice
+import scala.util.Success
+import scala.util.Failure
 
 object fileIOAPI {
-  @main def main(): Unit =
 
     implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     // needed for the future flatMap/onComplete in the end
@@ -22,7 +23,7 @@ object fileIOAPI {
       """
       FileIO-REST-Service
       Available routes:
-      GET: /fileIO/load
+      GET:  /fileIO/load
       POST: /fileIO/save
       """
 
@@ -45,11 +46,18 @@ object fileIOAPI {
       }
     )
 
-    val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
+    val bindingFuture = Http().newServerAt("0.0.0.0", 8080).bind(route)
 
-    //println(s"Server now online. Please navigate to http://localhost:8080/fileIO\nPress RETURN to stop...")
-    //StdIn.readLine() // let it run until user presses return
-    //bindingFuture
-    //  .flatMap(_.unbind()) // trigger unbinding from the port
-    //  .onComplete(_ => system.terminate()) // and shutdown when done
+    bindingFuture.onComplete{
+      case Success(value) => {
+        println(s"Server now online. Please navigate to http://localhost:8081/fileIO\nPress RETURN to stop...")
+        StdIn.readLine() // let it run until user presses return
+        bindingFuture
+          .flatMap(_.unbind()) // trigger unbinding from the port
+          .onComplete(_ => system.terminate()) // and shutdown when done
+      }
+      case Failure(exception) => {
+        println("fileIO-Rest-Server could not be started! Error: " + exception + "\n")
+      }
+    }
 }

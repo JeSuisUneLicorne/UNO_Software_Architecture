@@ -3,26 +3,30 @@ package commandComponent
 
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
-import UNO.controllerComponent.controllerInterface
-import UNO.controllerComponent.controllerBaseImp
+import command.commandComponent.controller.controllerInterface
+//import UNO.controllerComponent.controllerBaseImp
 import UNO.controllerComponent.controllerStuckImp.Controller
 import com.google.inject.Guice
 import command.commandComponent.SetCommand
-import UNO.controllerComponent.UnoGameModule
+//import UNO.controllerService.controllerComponent.UnoGameModule
+//import UNO.controllerComponent.UnoGameModule
 import scala.util.Try
-import UNO.PlayerComponent.playerBaseImp.Player
-import UNO.cardComponent.cardBaseImp.Card
+import command.commandComponent.model.PlayerComponent.playerBaseImp.Player
+import command.commandComponent.model.cardComponent.cardBaseImp.Card
+import command.commandComponent.model.stackComponent.stackBaseImp.Stack
+import command.commandComponent.controller.UnoGameModule
+//import UNO.PlayerComponent.playerBaseImp.Player
+//import UNO.cardComponent.cardBaseImp.Card
 import scala.util.matching.Regex
-import UNO.stackComponent.stackBaseImp.Stack
-//import UNO.GameState.playerList
-//import UNO.stackComponent.stackBaseImp.Stack.stackCard
+//import UNO.stackComponent.stackBaseImp.Stack
 
 object UndoManager:
   private var undoStack: List[Command] = Nil
   private var redoStack: List[Command] = Nil
 
   val controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
-  
+  //val controller = this
+
   def doStep(jsonCommand: String): String =
     val json: JsValue = Json.parse(jsonCommand)
     val playerList1 = (json \ "playerList1").as[String]
@@ -62,6 +66,7 @@ object UndoManager:
       newCommand.doStep()
     }
 
+  // check dropright, can be deleted i guess
   def controllerToJson(controller: controllerInterface): String =
     Json.obj(
       "playerList1" -> controller.playerList(0).toString.dropRight(1),
