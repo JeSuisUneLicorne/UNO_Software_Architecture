@@ -1,7 +1,7 @@
 package UNO
 package util
 
-import UNO.UnoGame.Controller
+import UNO.controllerComponent.controllerStuckImp.Controller
 
 trait Event2
 
