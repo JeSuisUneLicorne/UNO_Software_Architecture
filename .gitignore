@@ -49,7 +49,6 @@ project/.sbtserver
 
 # Application
 UNO.log
-gamestate.*
 
 # Metals
 /null
