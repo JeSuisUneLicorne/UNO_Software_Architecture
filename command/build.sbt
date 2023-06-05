@@ -17,8 +17,5 @@ lazy val command = (project in file("."))
       "com.google.inject" % "guice" % "5.1.0",
       ("net.codingwell" %% "scala-guice" % "5.1.1").cross(CrossVersion.for3Use2_13),
       "com.typesafe.play" %% "play-json" % "2.10.0-RC7",
-      "ch.qos.logback" % "logback-classic" % "1.4.7",
-      "org.apache.logging.log4j" % "log4j-api" % "2.20.0",
-      "org.apache.logging.log4j" % "log4j-core" % "2.20.0"
     )
   )

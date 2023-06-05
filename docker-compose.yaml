@@ -46,3 +46,4 @@ services:
       GAMEDATA_SERVICE_PORT: 8080
       COMMAND_SERVICE_PORT: 8081
       COMMAND_SERVICE_HOST: command
+    tty: true
