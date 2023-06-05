@@ -4,7 +4,7 @@ val AkkaHttpVersion = "10.5.1"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "root",
+    name := "command",
     version := "0.1.0-SNAPSHOT",
     scalaVersion := ScalaVersion3,
     libraryDependencies ++= Seq(
@@ -16,7 +16,9 @@ lazy val root = (project in file("."))
       "org.slf4j" % "slf4j-log4j12" % "1.7.32" exclude("org.slf4j", "slf4j-log4j12"),
       "com.google.inject" % "guice" % "5.1.0",
       ("net.codingwell" %% "scala-guice" % "5.1.1").cross(CrossVersion.for3Use2_13),
-      "com.typesafe.play" %% "play-json" % "2.10.0-RC7"
+      "com.typesafe.play" %% "play-json" % "2.10.0-RC7",
+      "ch.qos.logback" % "logback-classic" % "1.4.7",
+      "org.apache.logging.log4j" % "log4j-api" % "2.20.0",
+      "org.apache.logging.log4j" % "log4j-core" % "2.20.0"
     )
   )
-
