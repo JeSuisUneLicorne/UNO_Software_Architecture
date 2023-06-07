@@ -21,8 +21,8 @@ object UnoGame {
     print(State.handle(instructionEvent()))
     print(State.handle(gameStatsEvent()))
     
-    //if UIType == true then
-      //val gui = new SwingGui(Controller)
+    if UIType == true then
+      val gui = new SwingGui(Controller)
     var input1: String = ""
     while input1 != "q" 
     do

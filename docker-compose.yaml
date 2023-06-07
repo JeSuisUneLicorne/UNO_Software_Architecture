@@ -38,12 +38,12 @@ services:
     depends_on:
       - gameData
       - command
-    #volumes:
-    #  - /tmp/.X11-unix:/tmp/.X11-unix
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
-      #DISPLAY: $DISPLAY
-      GAMEDATA_SERVICE_HOST: gameData
-      GAMEDATA_SERVICE_PORT: 8080
-      COMMAND_SERVICE_PORT: 8081
-      COMMAND_SERVICE_HOST: command
+      - DISPLAY=:-1
+      #GAMEDATA_SERVICE_HOST: gameData
+      #GAMEDATA_SERVICE_PORT: 8080
+      #COMMAND_SERVICE_PORT: 8081
+      #COMMAND_SERVICE_HOST: command
     tty: true
