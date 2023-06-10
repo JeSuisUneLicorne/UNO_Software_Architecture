@@ -11,37 +11,37 @@ import scala.concurrent.{Await, Future}
 import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 import UNO.dbComponent.tables.PlayerTable
+import UNO.dbComponent.tables.PlayerCardsTable
 
-
-object PlayerDOA:
+object PlayerCardsDOA:
   val connectIP = sys.env.getOrElse("POSTGRES_IP", "localhost").toString
   val connectPort = sys.env.getOrElse("POSTGRES_PORT", 5432).toString.toInt
   val database_user = sys.env.getOrElse("POSTGRES_USER", "postgres").toString
   val database_pw = sys.env.getOrElse("POSTGRES_PASSWORD", "postgres").toString
   val database_name = sys.env.getOrElse("POSTGRES_DB", "postgres").toString
 
-  val database =
+    val database =
     Database.forURL(
       url = "jdbc:postgresql://" + connectIP + ":" + connectPort + "/" + database_name + "?serverTimezone=UTC",
       user = database_user,
       password = database_pw,
       driver = "org.postgresql.Driver")
 
-  val playerTable = TableQuery(new PlayerTable(_))
+  val playerCardsTable = TableQuery(new PlayerCardsTable(_))
 
   def create: Unit =
     //database.run(fieldTable.schema.create)
     val running = Future(Await.result(database.run(DBIO.seq(
-      playerTable.schema.createIfNotExists,
+      playerCardsTable.schema.createIfNotExists,
     )), Duration.Inf))
     running.onComplete{
-      case Success(_) => println("Connection to DB & Creation of PlayerTable successful!")
+      case Success(_) => println("Connection to DB & Creation of PlayerCardsTable successful!")
       case Failure(e) => println("Error: " + e)
     }
   
   def update(name: String): Unit =
-    playerTable.schema.createIfNotExists
-    val insertAction = playerTable returning playerTable.map(_.name)
+    playerCardsTable.schema.createIfNotExists
+    val insertAction = playerCardsTable returning playerCardsTable.map(_.name)
     += (name)
     val insertResult = database.run(insertAction)
     insertResult.onComplete {
@@ -60,10 +60,10 @@ object PlayerDOA:
     ""
   
   def delete: Unit =
-    val deleteAction = playerTable.delete
+    val deleteAction = playerCardsTable.delete
     val resultFuture = database.run(deleteAction)
 
     resultFuture.onComplete {
-      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table Player")
+      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table PlayerCards")
       case Failure(u) => println(s"Error during delete: ${u}")
     }

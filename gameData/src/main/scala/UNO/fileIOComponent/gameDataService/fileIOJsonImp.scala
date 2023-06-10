@@ -13,8 +13,9 @@ object fileIOJsonImp {
   }
 
   def save(gameAsJson: String): Unit = {
-    val pw = PrintWriter(File("gamestate.json"))
-    pw.write(gameAsJson)
-    pw.close
+    //DbInterface.saveGameState(gameAsJson)
+    //val pw = PrintWriter(File("gamestate.json"))
+    //pw.write(gameAsJson)
+    //pw.close
   } 
 }
