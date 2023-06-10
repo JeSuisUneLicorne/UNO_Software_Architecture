@@ -15,6 +15,10 @@ lazy val gameData = (project in file("."))
       "org.slf4j" % "slf4j-log4j12" % "1.7.32" exclude("org.slf4j", "slf4j-log4j12"),
       "com.google.inject" % "guice" % "5.1.0",
       "net.codingwell" %% "scala-guice" % "5.1.1",
-      "com.typesafe.play" %% "play-json" % "2.10.0-RC7"
+      "com.typesafe.play" %% "play-json" % "2.10.0-RC7",
+      ("com.typesafe.slick" %% "slick" % "3.3.3").cross(CrossVersion.for3Use2_13),
+      "org.postgresql" % "postgresql" % "42.5.4",
+      "org.slf4j" % "slf4j-nop" % "1.6.4",
+      ("com.typesafe.slick" %% "slick-hikaricp" % "3.3.3").cross(CrossVersion.for3Use2_13),
     )
   )
