@@ -45,10 +45,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
   //val fileIo = injector.getInstance(classOf[FileIO])
 //  def Controller: controllerInterface = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   //val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
-  //val gameDataServer = "http://localhost:8080/fileIO"
-  val gameDataServer = "http://gameData:8080/fileIO"
 
-  //val commandServer = "http://localhost:8081/command"
+  val gameDataServer = "http://gameData:8080/fileIO"
   val commandServer = "http://command:8081/command"
   
   def setDefault(): Unit =
@@ -305,6 +303,7 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       uri = gameDataServer + "/save",
       entity = gameStateToJson()
     ))
+
   def load: Unit =
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     val executionContext: ExecutionContextExecutor = system.executionContext
