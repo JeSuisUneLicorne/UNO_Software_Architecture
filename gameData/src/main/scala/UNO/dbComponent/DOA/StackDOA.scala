@@ -10,51 +10,45 @@ import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}
 import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
-import UNO.dbComponent.tables.PlayerTable
-import UNO.dbComponent.tables.PlayerCardsTable
+import UNO.dbComponent.tables.StackTable
 
-object PlayerCardsDOA:
+
+object StackDOA:
   val connectIP = sys.env.getOrElse("POSTGRES_IP", "localhost").toString
   val connectPort = sys.env.getOrElse("POSTGRES_PORT", 5433).toString.toInt
   val database_user = sys.env.getOrElse("POSTGRES_USER", "postgres").toString
   val database_pw = sys.env.getOrElse("POSTGRES_PASSWORD", "postgres").toString
   val database_name = sys.env.getOrElse("POSTGRES_DB", "postgres").toString
 
-    val database =
+  val database =
     Database.forURL(
       url = "jdbc:postgresql://" + connectIP + ":" + connectPort + "/" + database_name + "?serverTimezone=UTC",
       user = database_user,
       password = database_pw,
       driver = "org.postgresql.Driver")
 
-  val playerCardsTable = TableQuery(new PlayerCardsTable(_))
+  val stackTable = TableQuery(new StackTable(_))
 
   def create: Unit =
-    //val dropAction =  playerCardsTable.schema.dropIfExists
-    //val resultFuture = database.run(dropAction)
-    //resultFuture.onComplete {
-    //  case Success(_) => println("PlayerCards table deleted successfully!")
-    //  case Failure(e) => println("Error during table deletion: " + e)
-    //}
-
-    
+    //database.run(fieldTable.schema.create)
     val running = Future(Await.result(database.run(DBIO.seq(
-      playerCardsTable.schema.createIfNotExists,
+      stackTable.schema.createIfNotExists,
     )), Duration.Inf))
     running.onComplete{
-      case Success(_) => println("Connection to DB & Creation of PlayerCardsTable successful!")
+      case Success(_) => println("Connection to DB & Creation of StackTable successful!")
       case Failure(e) => println("Error: " + e)
     }
-
-  def update(name: String, value: String, color: String): Unit =
-    playerCardsTable.schema.createIfNotExists
-    val insertAction = playerCardsTable returning playerCardsTable.map(_.playerName)
-    += (name, value, color)
+  
+  def update(value: String, color: String): Unit =
+    stackTable.schema.createIfNotExists
+    val insertAction = stackTable returning stackTable.map(_.value)
+    += (value, color)
     val insertResult = database.run(insertAction)
+    
     insertResult.onComplete {
       case Success(_) =>
         // Fetch the updated data from the database
-        val queryAction = playerCardsTable.filter(_.playerName === name).result
+        val queryAction = stackTable.filter(_.stackValue === value).result
         val queryResult = database.run(queryAction)
         queryResult.onComplete {
           case Success(data) => println("Updated data: " + data)
@@ -62,15 +56,16 @@ object PlayerCardsDOA:
         }
       case Failure(e) => println("Error: " + e)
     }
+    
 
   def read: String =
     ""
   
   def delete: Unit =
-    val deleteAction = playerCardsTable.delete
+    val deleteAction = stackTable.delete
     val resultFuture = database.run(deleteAction)
 
     resultFuture.onComplete {
-      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table PlayerCards")
+      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table Stack")
       case Failure(u) => println(s"Error during delete: ${u}")
     }
