@@ -12,7 +12,6 @@ import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 import UNO.dbComponent.tables.StackTable
 
-
 object StackDOA:
   val connectIP = sys.env.getOrElse("POSTGRES_IP", "localhost").toString
   val connectPort = sys.env.getOrElse("POSTGRES_PORT", 5433).toString.toInt
@@ -30,7 +29,14 @@ object StackDOA:
   val stackTable = TableQuery(new StackTable(_))
 
   def create: Unit =
-    //database.run(fieldTable.schema.create)
+    /*
+    val dropAction =  stackTable.schema.dropIfExists
+    val resultFuture = database.run(dropAction)
+    resultFuture.onComplete {
+      case Success(_) => println("PlayerCards table deleted successfully!")
+      case Failure(e) => println("Error during table deletion: " + e)
+    }
+    */
     val running = Future(Await.result(database.run(DBIO.seq(
       stackTable.schema.createIfNotExists,
     )), Duration.Inf))
@@ -38,13 +44,13 @@ object StackDOA:
       case Success(_) => println("Connection to DB & Creation of StackTable successful!")
       case Failure(e) => println("Error: " + e)
     }
-  
+
   def update(value: String, color: String): Unit =
     stackTable.schema.createIfNotExists
     val insertAction = stackTable returning stackTable.map(_.value)
     += (value, color)
     val insertResult = database.run(insertAction)
-    
+
     insertResult.onComplete {
       case Success(_) =>
         // Fetch the updated data from the database
@@ -56,11 +62,10 @@ object StackDOA:
         }
       case Failure(e) => println("Error: " + e)
     }
-    
 
   def read: String =
     ""
-  
+
   def delete: Unit =
     val deleteAction = stackTable.delete
     val resultFuture = database.run(deleteAction)

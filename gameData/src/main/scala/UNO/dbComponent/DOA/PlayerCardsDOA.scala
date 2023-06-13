@@ -30,12 +30,14 @@ object PlayerCardsDOA:
   val playerCardsTable = TableQuery(new PlayerCardsTable(_))
 
   def create: Unit =
-    //val dropAction =  playerCardsTable.schema.dropIfExists
-    //val resultFuture = database.run(dropAction)
-    //resultFuture.onComplete {
-    //  case Success(_) => println("PlayerCards table deleted successfully!")
-    //  case Failure(e) => println("Error during table deletion: " + e)
-    //}
+    /*
+    val dropAction =  playerCardsTable.schema.dropIfExists
+    val resultFuture = database.run(dropAction)
+    resultFuture.onComplete {
+      case Success(_) => println("PlayerCards table deleted successfully!")
+      case Failure(e) => println("Error during table deletion: " + e)
+    }
+    */
 
     
     val running = Future(Await.result(database.run(DBIO.seq(

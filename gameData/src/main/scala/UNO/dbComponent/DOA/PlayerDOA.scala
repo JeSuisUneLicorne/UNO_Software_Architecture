@@ -58,7 +58,7 @@ object PlayerDOA:
 
   def read: String =
     ""
-  
+    
   def delete: Unit =
     val deleteAction = playerTable.delete
     val resultFuture = database.run(deleteAction)
