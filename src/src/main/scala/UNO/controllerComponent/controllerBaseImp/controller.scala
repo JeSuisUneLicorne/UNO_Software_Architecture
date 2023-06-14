@@ -301,7 +301,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
-    print(gameStateToJson())
 
     val response: Future[HttpResponse] = Http().singleRequest(HttpRequest(
       method = HttpMethods.POST,
