@@ -4,9 +4,9 @@ import scala.util.Try
 import scala.util.Success
 import scala.util.Failure
 import scala.io.StdIn.readLine
-import UNO.dbComponent.DOA.PlayerDOA
-import UNO.dbComponent.DOA.PlayerCardsDOA
-import UNO.dbComponent.DOA.StackDOA
+import UNO.dbComponent.Slick.DOA.PlayerDOA
+import UNO.dbComponent.Slick.DOA.PlayerCardsDOA
+import UNO.dbComponent.Slick.DOA.StackDOA
 
 object uno {
   @main def main(): Unit =

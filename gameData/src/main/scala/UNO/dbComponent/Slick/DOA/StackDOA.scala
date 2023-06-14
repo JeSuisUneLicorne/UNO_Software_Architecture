@@ -1,4 +1,4 @@
-package UNO.dbComponent.DOA
+package UNO.dbComponent.Slick.DOA
 
 import slick.jdbc.PostgresProfile.api.*
 import slick.jdbc.JdbcBackend.Database
@@ -10,10 +10,9 @@ import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}
 import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
-import UNO.dbComponent.tables.PlayerTable
+import UNO.dbComponent.Slick.tables.StackTable
 
-
-object PlayerDOA:
+object StackDOA:
   val connectIP = sys.env.getOrElse("POSTGRES_IP", "localhost").toString
   val connectPort = sys.env.getOrElse("POSTGRES_PORT", 5433).toString.toInt
   val database_user = sys.env.getOrElse("POSTGRES_USER", "postgres").toString
@@ -27,27 +26,35 @@ object PlayerDOA:
       password = database_pw,
       driver = "org.postgresql.Driver")
 
-  val playerTable = TableQuery(new PlayerTable(_))
+  val stackTable = TableQuery(new StackTable(_))
 
   def create: Unit =
-    //database.run(fieldTable.schema.create)
+    /*
+    val dropAction =  stackTable.schema.dropIfExists
+    val resultFuture = database.run(dropAction)
+    resultFuture.onComplete {
+      case Success(_) => println("PlayerCards table deleted successfully!")
+      case Failure(e) => println("Error during table deletion: " + e)
+    }
+    */
     val running = Future(Await.result(database.run(DBIO.seq(
-      playerTable.schema.createIfNotExists,
+      stackTable.schema.createIfNotExists,
     )), Duration.Inf))
     running.onComplete{
-      case Success(_) => println("Connection to DB & Creation of PlayerTable successful!")
+      case Success(_) => println("Connection to DB & Creation of StackTable successful!")
       case Failure(e) => println("Error: " + e)
     }
-  
-  def update(name: String): Unit =
-    playerTable.schema.createIfNotExists
-    val insertAction = playerTable returning playerTable.map(_.name)
-    += (name)
+
+  def update(value: String, color: String): Unit =
+    stackTable.schema.createIfNotExists
+    val insertAction = stackTable returning stackTable.map(_.value)
+    += (value, color)
     val insertResult = database.run(insertAction)
+
     insertResult.onComplete {
       case Success(_) =>
         // Fetch the updated data from the database
-        val queryAction = playerTable.filter(_.name === name).result
+        val queryAction = stackTable.filter(_.stackValue === value).result
         val queryResult = database.run(queryAction)
         queryResult.onComplete {
           case Success(data) => println("Updated data: " + data)
@@ -56,15 +63,15 @@ object PlayerDOA:
       case Failure(e) => println("Error: " + e)
     }
 
-  def read: Future[Seq[String]] =
-    val queryAction = playerTable.result
+  def read: Future[Seq[(String, String)]] =
+    val queryAction = stackTable.result
     database.run(queryAction)
 
   def delete: Unit =
-    val deleteAction = playerTable.delete
+    val deleteAction = stackTable.delete
     val resultFuture = database.run(deleteAction)
 
     resultFuture.onComplete {
-      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table Player")
+      case Success(numRowsDeleted) => println(s"Deleted ${numRowsDeleted} rows from Table Stack")
       case Failure(u) => println(s"Error during delete: ${u}")
     }

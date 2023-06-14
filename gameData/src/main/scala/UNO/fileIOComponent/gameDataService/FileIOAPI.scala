@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContextExecutor
 import com.google.inject.Guice
 import scala.util.Success
 import scala.util.Failure
-import UNO.dbComponent.DbImp
+import UNO.dbComponent.Slick.DbImp
 
 object fileIOAPI {
 
@@ -19,8 +19,8 @@ object fileIOAPI {
     // needed for the future flatMap/onComplete in the end
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
-    
-    val routes: String = 
+
+    val routes: String =
       """
       FileIO-REST-Service
       Available routes:

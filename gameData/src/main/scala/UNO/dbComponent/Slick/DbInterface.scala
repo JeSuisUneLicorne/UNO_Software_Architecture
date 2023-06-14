@@ -1,4 +1,4 @@
-package UNO.dbComponent
+package UNO.dbComponent.Slick
 
 trait DbInterface:
   def load(): String

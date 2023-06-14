@@ -1,4 +1,4 @@
-package UNO.dbComponent
+package UNO.dbComponent.Slick
 
 trait DOAInterface:
   def create: Unit

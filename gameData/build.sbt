@@ -20,5 +20,6 @@ lazy val gameData = (project in file("."))
       "org.postgresql" % "postgresql" % "42.5.4",
       "org.slf4j" % "slf4j-nop" % "1.6.4",
       ("com.typesafe.slick" %% "slick-hikaricp" % "3.3.3").cross(CrossVersion.for3Use2_13),
+      ("org.mongodb.scala" %% "mongo-scala-driver" % "4.9.0").cross(CrossVersion.for3Use2_13)
     )
   )
