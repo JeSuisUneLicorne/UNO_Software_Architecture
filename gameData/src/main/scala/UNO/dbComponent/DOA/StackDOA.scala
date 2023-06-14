@@ -63,8 +63,9 @@ object StackDOA:
       case Failure(e) => println("Error: " + e)
     }
 
-  def read: String =
-    ""
+  def read: Future[Seq[(String, String)]] =
+    val queryAction = stackTable.result
+    database.run(queryAction)
 
   def delete: Unit =
     val deleteAction = stackTable.delete

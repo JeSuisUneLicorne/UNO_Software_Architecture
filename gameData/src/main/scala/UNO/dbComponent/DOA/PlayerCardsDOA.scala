@@ -65,9 +65,15 @@ object PlayerCardsDOA:
       case Failure(e) => println("Error: " + e)
     }
 
-  def read: String =
-    ""
-  
+  def read(playerName: String): Future[Seq[(String, String)]] = {
+    val query = playerCardsTable
+      .filter(_.playerName === playerName)
+      .map(card => (card.cardValue, card.cardColor))
+      .result
+
+    database.run(query)
+  }
+
   def delete: Unit =
     val deleteAction = playerCardsTable.delete
     val resultFuture = database.run(deleteAction)

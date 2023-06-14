@@ -1,5 +1,5 @@
 package UNO.dbComponent
 
 trait DbInterface:
-  def loadGameState: String
+  def load(): String
   def save(Json:String): Unit

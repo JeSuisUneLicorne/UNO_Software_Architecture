@@ -56,9 +56,10 @@ object PlayerDOA:
       case Failure(e) => println("Error: " + e)
     }
 
-  def read: String =
-    ""
-    
+  def read: Future[Seq[String]] =
+    val queryAction = playerTable.result
+    database.run(queryAction)
+
   def delete: Unit =
     val deleteAction = playerTable.delete
     val resultFuture = database.run(deleteAction)

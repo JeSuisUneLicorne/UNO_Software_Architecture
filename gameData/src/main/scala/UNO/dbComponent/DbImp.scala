@@ -12,7 +12,6 @@ import UNO.dbComponent.DOA.StackDOA
 object DbImp:
   def save(value: String): Unit =
     val jsString: JsValue = Json.parse(value)
-    println("\n" + jsString)
 
     PlayerDOA.create
     PlayerCardsDOA.create
@@ -44,5 +43,25 @@ object DbImp:
     val stackColor_ = (jsString \ "gameState" \ "playStackColor").as[String]
     StackDOA.update(stackValue_, stackColor_)
 
-  def load: Unit =
-    ""
+  def load(): String =
+    val players = Await.result(PlayerDOA.read, 10.seconds).toList.reverse
+    val stack: List[String] = Await.result(StackDOA.read, 10.seconds).map {
+      case (value, color) => List(value, color) 
+    }.flatten.toList
+
+    val player1Cards = Await.result(PlayerCardsDOA.read(players(0)), 10.seconds).toList
+    val player2Cards = Await.result(PlayerCardsDOA.read(players(0)), 10.seconds).toList
+    toJson(players, stack, player1Cards, player2Cards).toString
+
+  def toJson(player: List[String], stack: List[String], player1Cards: List[(String, String)], player2Cards: List[(String, String)]) =
+    Json.obj(
+      "gameState" -> Json.obj(
+        "playerListName" -> player.map(x => x),
+        "playerCardsValue1" -> player1Cards.map(_._1),
+        "playerCardsColor1" -> player1Cards.map(_._2),
+        "playerCardsValue2" -> player2Cards.map(_._1),
+        "playerCardsColor2" -> player2Cards.map(_._2),
+        "playStackValue" -> stack(0),
+        "playStackColor" -> stack(1)
+      )
+    )

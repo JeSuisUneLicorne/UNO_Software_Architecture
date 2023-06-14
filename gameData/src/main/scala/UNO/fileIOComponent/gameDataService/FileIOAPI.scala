@@ -40,7 +40,7 @@ object fileIOAPI {
       path("fileIO" / "save") {
         post {
           entity(as[String]) { game =>
-            DbImp.save(game)
+            fileIOJsonImp.save(game)
             complete("game saved")
           }
         }
