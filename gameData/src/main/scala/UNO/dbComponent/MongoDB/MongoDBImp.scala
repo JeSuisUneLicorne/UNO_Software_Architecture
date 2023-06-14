@@ -9,14 +9,15 @@ import UNO.dbComponent.Slick.DbInterface
 object MongoDBImp:
   def save(json: String): Unit =
 
-    //MongoDBDOA.delete()
+    MongoDBDOA.delete()
+    Thread.sleep(400)
 
     val createFuture = Future {
     MongoDBDOA.create
     }
 
     val createResult = Await.result(createFuture, Duration.Inf)
-    Thread.sleep(300)
+    Thread.sleep(400)
     MongoDBDOA.update(json)
 
   def load(): String =

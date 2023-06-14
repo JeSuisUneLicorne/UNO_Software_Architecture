@@ -12,8 +12,8 @@ object fileIOJsonImp {
   def load(): String = {
     
     //MongoDBImp.load()
-    // Slick-DB
-     DbImp.load()
+    //Slick-DB
+    DbImp.load()
     
     
     //val file = scala.io.Source.fromFile("gamestate.json").mkString
@@ -24,11 +24,10 @@ object fileIOJsonImp {
 
     //MongoDBImp.save(gameAsJson)
     
-    // Slick-DB 
-     DbImp.save(gameAsJson)
+    //Slick-DB 
+    DbImp.save(gameAsJson)
     
     
-    //DbInterface.saveGameState(gameAsJson)
     //val pw = PrintWriter(File("gamestate.json"))
     //pw.write(gameAsJson)
     //pw.close
