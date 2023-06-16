@@ -3,12 +3,12 @@ package scala.aview
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import UNO.aview.TUI
+import UNO.ui.TUI
 import UNO.util.{State, *}
-import UNO.controller.controllerComponent.controllerBaseImp.Controller
-import UNO.model.stackComponent.stackBaseImp.Stack
-import UNO.model.PlayerComponent.playerBaseImp.Player
-import UNO.model.cardComponent.cardBaseImp.Card
+import UNO.controllerComponent.controllerBaseImp.Controller
+import UNO.stackComponent.stackBaseImp.Stack
+import UNO.PlayerComponent.playerBaseImp.Player
+import UNO.cardComponent.cardBaseImp.Card
 
 class TuiSpec extends AnyWordSpec with Matchers {
   //val tui = new TUI(controller)

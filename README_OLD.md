@@ -69,5 +69,5 @@ You can write various instructions to play with the TUI.
 * **Load Game:** load
 <br/><br/><br/><br/><br/>
 `INFO:`To clone the repository and play you have to set the enviroment variable. <br/>
-Use UI_TYPE=tui to play only with TUI. Use UI_TYPE=gui to play with GUI and TUI.
+Use UI_TYPE=tui to play only with TUI. Use UI_TYPE=UNO.gui to play with GUI and TUI.
 <img src="src/main/Pics/Env.PNG" width="1000"> 

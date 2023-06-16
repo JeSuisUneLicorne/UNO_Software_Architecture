@@ -1,4 +1,5 @@
-package UNO.util
+package UNO
+package util
 
 import UNO.UnoGame.Controller
 
