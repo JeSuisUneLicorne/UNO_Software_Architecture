@@ -11,6 +11,7 @@ import scala.concurrent.ExecutionContextExecutor
 import com.google.inject.Guice
 import scala.util.Success
 import scala.util.Failure
+import UNO.dbComponent.DbImp
 
 object fileIOAPI {
 
@@ -50,7 +51,7 @@ object fileIOAPI {
 
     bindingFuture.onComplete{
       case Success(value) => {
-        println(s"Server now online. Please navigate to http://localhost:8081/fileIO\nPress RETURN to stop...")
+        println(s"Server now online. Please navigate to http://localhost:8080/fileIO\nPress RETURN to stop...")
         StdIn.readLine() // let it run until user presses return
         bindingFuture
           .flatMap(_.unbind()) // trigger unbinding from the port
