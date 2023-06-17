@@ -21,9 +21,26 @@ Base version of the game is by [Konstantin Zabaznov](https://github.com/konstant
 
 Recommanded is to use <a href="https://code.visualstudio.com/" target="_blank">VSCode</a> to run the project. Get the recommanded VSCode Plugins from below. Don't forget to enable Preview in the Markdown Plugin in Settings.
 
-SBT: ```run / clean / compile / test```
+<b>SBT </b>: ```run / clean / compile / test```
 
 Run tests with with enabled coverage: ```sbt clean coverage test``` (more info about <a href="https://www.youtube.com/watch?v=oz_HcHvbp7Y" target="_blank">coverage</a>)
+
+<b>Docker </b>: Download <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">Docker</a> and install it.
+
+Build with: ```docker-compose up --build```. <br />
+Start with: ```docker-compose up -d``` to allow user input via console. <br />
+Attach to main-service with: ```docker attach uno_service```.
+
+<details>
+    <summary> <b> Troubleshooting Docker </b> </summary>
+    <ul>
+        <li> In case of wsl error, try: ```wsl --install Ubuntu --web-download``` or check this <a href="https://learn.microsoft.com/de-de/windows/wsl/troubleshooting" target="_blank">site</a>.
+        <li> In case of freezes while downloading libs or while compiling: Docker Desktop -> Settings -> Resources -> RAM 4GB or higher + Swap 2GB or higher
+        <li> In case of freezes while  ```docker-compose up --build``` delete all images and containers (Docker Desktop GUI or manuel)
+        <li> In case of freezes while starting a container (no deletion possible): Restart computer! or find process-id and kill it!
+    </ul>
+</details>
+
 
 ### Testing
 

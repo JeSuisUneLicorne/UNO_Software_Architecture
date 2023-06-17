@@ -1,7 +1,7 @@
 package command
 package commandComponent
 
-import UNO.controllerComponent.controllerInterface
+import command.commandComponent.controller.controllerInterface
 
 trait Command:
   def doStep(): controllerInterface
