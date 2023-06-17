@@ -29,7 +29,7 @@ object StackDOA:
   val stackTable = TableQuery(new StackTable(_))
 
   def create: Unit =
-    /*
+    /* Drop Table Schema, if it exists
     val dropAction =  stackTable.schema.dropIfExists
     val resultFuture = database.run(dropAction)
     resultFuture.onComplete {

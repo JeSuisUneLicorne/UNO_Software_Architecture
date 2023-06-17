@@ -30,7 +30,8 @@ object PlayerCardsDOA:
   val playerCardsTable = TableQuery(new PlayerCardsTable(_))
 
   def create: Unit =
-    /*
+    /* Drop Table Schema, if it exists
+    
     val dropAction =  playerCardsTable.schema.dropIfExists
     val resultFuture = database.run(dropAction)
     resultFuture.onComplete {
