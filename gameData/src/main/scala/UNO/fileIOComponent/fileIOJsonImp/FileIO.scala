@@ -68,6 +68,7 @@ class FileIO extends FileIOTrait:
     val pw = new PrintWriter(new File("gamestate.json"))
     pw.write(Json.prettyPrint(gameStateToJson(gameState)))
     pw.close
+    Json.prettyPrint(gameStateToJson(gameState))
 
   def gameStateToJson(gameState: GameState) =
     Json.obj(

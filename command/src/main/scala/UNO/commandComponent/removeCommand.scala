@@ -1,20 +1,20 @@
-package UNO.controllerComponent
-
-package controllerBaseImp
+package command
+package commandComponent
 
 import UNO.controllerComponent.controllerInterface
 import UNO.cardComponent.cardBaseImp.Card
 //import util.Command
-import UNO.controllerComponent.Command
-
+//import UNO.commandComponent.Command
+import command.commandComponent.Command
 
 
 class RemoveCommand(handindex: Int, controller: controllerInterface) extends Command:
-  override def doStep(): Unit =
+  override def doStep(): controllerInterface =
     controller.playStack2 = controller.playerList(0).playerCards(handindex) :: controller.playStack2
     cardDiff
+    controller
 
-  override def undoStep(): Unit = //TODO: Aussetzen, Richtungswechsel funktionieren noch nicht, weil vorher setPlayercard + Playlist umdrehen
+  override def undoStep(): controllerInterface = //TODO: Aussetzen, Richtungswechsel funktionieren noch nicht, weil vorher setPlayercard + Playlist umdrehen
     if controller.playStack2(1).color == "black" then
       controller.playerList = List(controller.playerList(1).setPlayerCards(controller.playStack2(1)), controller.playerList(0))
       controller.playStack2 = controller.playStack2.tail.tail
@@ -23,6 +23,7 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
           controller.stackCard = controller.stackCard.reversePullCards(List(controller.playerList(1).playerCards(0)))
           controller.playerList = List(controller.playerList(0), controller.playerList(1).removePlayerCards(0))
         )
+      controller
     else
       controller.playerList = List(controller.playerList(1).setPlayerCards(controller.playStack2(0)), controller.playerList(0))
       controller.playStack2 = controller.playStack2.tail
@@ -35,10 +36,11 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
         controller.playerList = controller.playerList.reverse
       if controller.playerList(0).playerCards(handindex).value == "Ø" then
         controller.playerList = List(controller.playerList(1), controller.playerList(0))
-
-  override def redoStep(): Unit = 
+      controller
+  override def redoStep(): controllerInterface = 
     controller.playStack2 = controller.playerList(0).playerCards(handindex) :: controller.playStack2
     cardDiff
+    controller
   
   def cardDiff: Unit = 
     if controller.playerList(0).playerCards(handindex).color == "black" then
