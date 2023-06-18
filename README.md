@@ -29,7 +29,7 @@ Run tests with with enabled coverage: ```sbt clean coverage test``` (more info a
 
 Build with: ```docker-compose up --build```. <br />
 Start with: ```docker-compose up -d``` to allow user input via console. <br />
-Attach to main-service with: ```dpcler attach uno_service```.
+Attach to main-service with: ```docker attach uno_service```.
 
 <details>
     <summary> <b> Troubleshooting Docker </b> </summary>

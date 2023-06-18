@@ -190,14 +190,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       }
     }
 
-    
-    //old removeCard
-    //stackCard = stackEmpty()
-    //undoManager.doStep(new RemoveCommand(handindex:Int, this))
-    //unoCall = false
-    //publish(new updateStates)
-
-
   def doRemoveJson(controller: controllerInterface, handindex: Int): String =
     Json.obj(
       "playerList1" -> controller.playerList(0).toString,
@@ -250,9 +242,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
         }
       }
 
-      // OLD UNDO
-      //undoManager.undoStep()
-      //publish(new updateStates)
     else
       implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
       val executionContext: ExecutionContextExecutor = system.executionContext
@@ -291,11 +280,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
           }
         }
       }
-
-      
-      // OLD REDO
-      //undoManager.redoStep()
-      //publish(new updateStates)
 
   def save: Unit =
     implicit val system:ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
