@@ -1,13 +1,13 @@
-package UNO.dbComponent
+package UNO.dbComponent.Slick
 
 import play.api.libs.json._
 import scala.io.Source
 import play.api.libs.json._
 import scala.concurrent.Await
 import scala.concurrent.duration._
-import UNO.dbComponent.DOA.PlayerDOA
-import UNO.dbComponent.DOA.PlayerCardsDOA
-import UNO.dbComponent.DOA.StackDOA
+import UNO.dbComponent.Slick.DOA.PlayerDOA
+import UNO.dbComponent.Slick.DOA.PlayerCardsDOA
+import UNO.dbComponent.Slick.DOA.StackDOA
 
 object DbImp:
   def save(value: String): Unit =

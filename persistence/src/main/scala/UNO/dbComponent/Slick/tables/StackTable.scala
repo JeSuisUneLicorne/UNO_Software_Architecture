@@ -1,4 +1,4 @@
-package UNO.dbComponent.tables
+package UNO.dbComponent.Slick.tables
 
 import slick.jdbc.PostgresProfile.api.* 
 
