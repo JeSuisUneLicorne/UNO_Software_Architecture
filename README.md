@@ -1,6 +1,7 @@
 # UNO_Software_Architecture
 
-[![Coverage Status](https://coveralls.io/repos/github/JeSuisUneLicorne/UNO_Software_Architecture/badge.svg?branch=main)](https://coveralls.io/github/JeSuisUneLicorne/UNO_Software_Architecture?branch=main) [![Scala CI](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml/badge.svg?branch=main)](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml)
+[![Coverage Status](https://coveralls.io/repos/github/JeSuisUneLicorne/UNO_Software_Architecture/badge.svg?branch=main)](https://coveralls.io/github/JeSuisUneLicorne/UNO_Software_Architecture?branch=main) [![Scala CI](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml/badge.svg?branch=main)](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml) [![License](https://img.shields.io/github/license/JeSuisUneLicorne/UNO_Software_Architecture?color=green)](https://cdn130.picsart.com/272563229032201.jpg?r1024x1024) 
+![RepoSize](https://img.shields.io/github/repo-size/JeSuisUneLicorne/UNO_Software_Architecture)
 
 ![UNO LOGO](assets/img/UNO-Logo.png)
 
