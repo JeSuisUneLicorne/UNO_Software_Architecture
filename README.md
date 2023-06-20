@@ -4,7 +4,7 @@
 <!-- ![Logo](src/main/Pics/UNO-Logo.png) -->
 
 
-[![Coverage Status](https://coveralls.io/repos/github/JeSuisUneLicorne/UNO_Software_Architecture/badge.svg?branch=main)](https://coveralls.io/github/JeSuisUneLicorne/UNO_Software_Architecture?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/JeSuisUneLicorne/UNO_Software_Architecture/badge.svg?branch=main)](https://coveralls.io/github/JeSuisUneLicorne/UNO_Software_Architecture?branch=main) [![Scala CI](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml/badge.svg?branch=main)](https://github.com/JeSuisUneLicorne/UNO_Software_Architecture/actions/workflows/scala.yml)
 
 ### About
 
