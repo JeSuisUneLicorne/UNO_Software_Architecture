@@ -12,7 +12,11 @@ import scala.util.Success
 import scala.util.Failure
 
 object UnoGame {
+  //val injector = Guice.createInjector(new UnoGameModule)
+  //val Controller = injector.getInstance(classOf[controllerInterface])
   val Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
+
+  //val Controller = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   //val Controller = Guice.createInjector().getInstance(classOf[controllerInterface])
   val tui = new TUI(Controller)
   var UIType: Boolean = true //if System.getenv("UI_TYPE").equals("UNO.gui") then true else false
@@ -20,7 +24,7 @@ object UnoGame {
 
     print(State.handle(instructionEvent()))
     print(State.handle(gameStatsEvent()))
-    
+
     if UIType == true then
       val gui = new SwingGui(Controller)
     var input1: String = ""
