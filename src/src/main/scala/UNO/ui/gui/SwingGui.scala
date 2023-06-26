@@ -20,6 +20,8 @@ class SwingGui(controller: controllerInterface) extends Frame:
   peer.setBackground(java.awt.Color.DARK_GRAY)
 
   def gamePanel: GridPanel = new GridPanel(5, 1):
+    //contents += new Button("bladude")
+    
     contents += new GridPanel(1, controller.playerList(1).playerCards.size):
       border = LineBorder(java.awt.Color.DARK_GRAY, 50)
       background = java.awt.Color.DARK_GRAY
@@ -27,6 +29,15 @@ class SwingGui(controller: controllerInterface) extends Frame:
         val cardPanel = new CardPanel(1, i - 1, controller)
         contents += cardPanel.card
 
+  // was further down
+  contents = new BorderPanel:
+    add(welcomePanel, Position.Center)
+
+  
+
+  visible = true
+
+    /*
     contents += new GridPanel(1, 4):
       border = LineBorder(java.awt.Color.DARK_GRAY, 50)
       background = java.awt.Color.DARK_GRAY
@@ -49,6 +60,7 @@ class SwingGui(controller: controllerInterface) extends Frame:
             unoCall.background = java.awt.Color.RED
       }
     
+      
     contents += new GridPanel(1, controller.playerList.head.playerCards.size + 1):
       border = LineBorder(java.awt.Color.DARK_GRAY, 50)
       background = java.awt.Color.DARK_GRAY
@@ -227,6 +239,7 @@ class SwingGui(controller: controllerInterface) extends Frame:
           controller.redoGet
         })
 
+        */
   def welcomePanel = new GridPanel(2, 1):
     contents += new GridPanel(1, 1):
       border = LineBorder(java.awt.Color.DARK_GRAY, 50)
@@ -254,22 +267,28 @@ class SwingGui(controller: controllerInterface) extends Frame:
     contents = new BorderPanel:
       add(gamePanel, BorderPanel.Position.Center)
 
+/*
   def redraw2: Unit =
     contents = new BorderPanel:
       add(endGamePanel, BorderPanel.Position.Center)
 
+  */
   def redraw3: Unit = 
     contents = new BorderPanel:
       add(welcomePanel, BorderPanel.Position.Center)
 
+
   reactions += {
     case event: updateStates => redraw
-    case event: endStates => redraw2
+    //case event: endStates => redraw2
   }
 
+/*  
   visible = true
 
   def scaledImageIcon(path: String, width: Int, height: Int): ImageIcon =
     val orig = new ImageIcon(path)
     val scaledImage = orig.getImage.getScaledInstance(width, height, Image.SCALE_REPLICATE)
     new ImageIcon(scaledImage)
+
+    */
