@@ -329,9 +329,9 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
                     option.match {
                       case Some(lists) =>
                         val(playerliste, playstackonthefield) = lists
-                        playerList = playerliste
-                        playStack2 = playstackonthefield
-                        gameStatus = LOADED
+                        this.playerList = playerliste
+                        this.playStack2 = playstackonthefield
+                        this.gameStatus = LOADED
                         "load success"
                       case None=>
                         gameStatus = COULD_NOT_LOAD
