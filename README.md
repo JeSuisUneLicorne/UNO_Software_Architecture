@@ -47,7 +47,27 @@ Updated from WordSpec to <a href="https://www.scalatest.org/scaladoc/3.2.0/org/s
 
 In sbt console type ```test```.
 
-### Screenshots
+### Performance Testing with Gattling
+
+Download <a href="https://gatling.io/open-source/" target="_blank">Gattling's latest version</a>.
+
+<ul>
+    <li> Load Testing
+    <li> Stress Testing
+    <li> Volume Testing
+    <li> Endurance Testing
+    <li> Spike Testing
+</ul>
+
+Gattling is build on top of the Akka toolkit. 
+
+Why is Gattling so powerful and resource cheap?
+It overrides the JVM limitations of handling many threads. Virtual users in Gattling are messages NOT threads!
+
+<!-- Premature optimization is the root of all evil. - Donald Knuth-->
+
+
+<!-- ### Screenshots -->
 
 
 <!--TODO: add a couple of screenshots-->
@@ -56,32 +76,30 @@ In sbt console type ```test```.
 
 ### Guidelines
 
----
+<!-- --- -->
 
- <!-- <details> -->
+<details>
   <summary> <b>Guidelines</b> </summary>
     <ul>
         <li><a href="https://www.plainenglish.co.uk/how-to-write-in-plain-english.html" target="_blank">How to write in plain English</a>  
         <li><a href="https://github.com/RomuloOliveira/commit-messages-guide" target="_blank">Commit messages guide</a>  
         <li><a href="https://github.com/databricks/scala-style-guide" target="_blank">Databricks Scala Guide</a>  
         <li><a href="https://google.github.io/styleguide/htmlcssguide.html" target="_blank">Google's HTML/CSS Style Guide</a>  
-        <li><a href="https://github.com/airbnb/javascript" target="_blank">Airbnb JavaScript Style Guide</a>  
+        <!-- <li><a href="https://github.com/airbnb/javascript" target="_blank">Airbnb JavaScript Style Guide</a>  -->
     </ul>
-<!-- </details> -->
+</details>
 
----
- <!-- <details> -->
+<details>
   <summary> <b>Useful Links</b> </summary>
     <ul>
         <li> <a href="https://www.scala-sbt.org/1.x/docs/index.html" target="_blank">sbt Reference Manual</a>  
         <li> <a href="https://learngitbranching.js.org/" target="_blank">Learn Git Branching</a>  
         <li> <a href="https://developer.mozilla.org/en-US/" target="_blank">MDN Web Docs</a>  
-        <li> <a href="https://javascript.info/" target="_blank">The Modern JavaScript Tutorial</a>  
-        <li> <a href="https://github.blog/2018-09-06-removing-jquery-from-github-frontend/" target="_blank">Removing jQuery from GitHub.com frontend (jQuery is obsolete)</a>  
+        <!-- <li> <a href="https://javascript.info/" target="_blank">The Modern JavaScript Tutorial</a>  
+        <li> <a href="https://github.blog/2018-09-06-removing-jquery-from-github-frontend/" target="_blank">Removing jQuery from GitHub.com frontend (jQuery is obsolete)</a>  -->
     </ul>
-<!-- </details> -->
+</details>
 
----
 <details> 
   <summary> <b>Recommanded VSCode Plugins</b> </summary>
     <ul>
