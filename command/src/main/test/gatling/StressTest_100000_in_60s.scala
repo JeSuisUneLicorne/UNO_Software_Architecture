@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class SpikeTest extends Simulation {
+class StressTest_100000_in_60s extends Simulation {
 
   private val httpProtocol = http
     .baseUrl("http://0.0.0.0:8080")
@@ -17,8 +17,9 @@ class SpikeTest extends Simulation {
     .upgradeInsecureRequestsHeader("1")
     .userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0")
 
+  private val userAmount = 100000
 
-  private val spikeScenario = scenario("SpikeTest")
+  private val stressScenario = scenario("StressTest with 3000 Users for 20s")
     .exec(
       http("save")
         .post("/fileIO/save")
@@ -30,9 +31,6 @@ class SpikeTest extends Simulation {
     )
 
   setUp(
-    spikeScenario.inject(
-      rampUsers(10).during(10.seconds),
-      atOnceUsers(300),
-      rampUsers(10).during(10.seconds))
+    stressScenario.inject(stressPeakUsers(userAmount).during(60.seconds))
   ).protocols(httpProtocol)
 }

@@ -6,10 +6,10 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class StressTest extends Simulation {
+class StressTest_3000_in_20s extends Simulation {
 
   private val httpProtocol = http
-    .baseUrl("http://localhost:8080")
+    .baseUrl("http://0.0.0.0:8080")
     .inferHtmlResources()
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
     .acceptEncodingHeader("gzip, deflate")
@@ -19,30 +19,15 @@ class StressTest extends Simulation {
 
   private val userAmount = 3000
 
-  private val stressScenario = scenario("StressTest")
+  private val stressScenario = scenario("StressTest with 3000 Users for 20s")
     .exec(
-      http("Create Game")
-        .post("/controller/newg?name1=Timo&name2=Bence")
+      http("save")
+        .post("/fileIO/save")
     )
     .pause(1.seconds)
     .exec(
-      http("Next Player")
-        .post("/controller/next")
-    )
-    .pause(1.seconds)
-    .exec(
-      http("Take Card")
-        .post("/controller/take")
-    )
-    .pause(1.seconds)
-    .exec(
-      http("Place Card")
-        .get("/controller/get")
-    )
-    .pause(1.seconds)
-    .exec(
-      http("Get Game")
-        .get("/controller/get")
+      http("load")
+        .get("/fileIO/load")
     )
 
   setUp(
