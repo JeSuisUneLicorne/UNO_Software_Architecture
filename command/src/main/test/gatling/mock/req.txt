@@ -1,0 +1,11 @@
+{
+  "gameState" : {
+    "playerListName" : [ "1", "2" ],
+    "playerCardsValue1" : [ "1", "2", "3", "4", "5", "6", "7" ],
+    "playerCardsColor1" : [ "blue", "red", "yellow", "red", "blue", "red", "yellow" ],
+    "playerCardsValue2" : [ "7", "6", "5", "4+ ColorSwitch", "3", "2", "1" ],
+    "playerCardsColor2" : [ "yellow", "green", "blue", "black", "red", "blue", "yellow" ],
+    "playStackValue" : "2",
+    "playStackColor" : "red"
+  }
+}
