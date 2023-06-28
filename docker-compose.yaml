@@ -7,20 +7,33 @@ services:
     build:
       context: ./gameData/
       dockerfile: ./Dockerfile
-    ports:
-     - "8080:8080"
+    # ports:
+    #  - "8080:8080"
     stdin_open: true
     container_name: gameData_service
     environment:
-    #  POSTGRES_PASSWORD: postgres
-    #  POSTGRES_USER: postgres
-    #  POSTGRES_DB: postgres
-    #  POSTGRES_IP: localhost
-    #  POSTGRES_PORT: 5432
-    #ports:
-    #      - "5433:5432"
-      GAMEDATA_SERVICE_HOST: gameData
-      GAMEDATA_SERVICE_PORT: 8080
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_IP: localhost
+      POSTGRES_PORT: 5432
+      # GAMEDATA_SERVICE_HOST: gameData
+      # GAMEDATA_SERVICE_PORT: 8080
+    ports:
+       - "5433:5432"  
+    tty: true
+  persistence:
+    image: persistence-service
+    build:
+      context: ./persistence/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    container_name: persistence_service
+    environment:
+      COMMAND_SERVICE_HOST: persistence
+      COMMAND_SERVICE_PORT: 8080
     tty: true
   command:
     image: command-service
