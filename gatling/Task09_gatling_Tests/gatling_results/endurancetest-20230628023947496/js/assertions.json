@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.EnduranceTest",
+  "simulationId": "endurancetest-20230628023947496",
+  "start": 1687919988405,
+  "description": "",
+  "scenarios": ["EnduranceTest"],
+  "assertions": [
+
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.StressTest_10000_in_30s",
+  "simulationId": "stresstest-10000-in-30s-20230628020232560",
+  "start": 1687917753385,
+  "description": "10k in 30s",
+  "scenarios": ["StressTest with 10000 Users for 30s"],
+  "assertions": [
+
+  ]
+}

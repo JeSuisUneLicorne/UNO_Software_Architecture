@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.SpikeTestDB",
+  "simulationId": "spiketestdb-20230628021015878",
+  "start": 1687918216544,
+  "description": "",
+  "scenarios": ["SpikeTest DB"],
+  "assertions": [
+
+  ]
+}

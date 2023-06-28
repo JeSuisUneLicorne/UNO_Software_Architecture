@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.LoadTest_200",
+  "simulationId": "loadtest-200-20230628022507729",
+  "start": 1687919108456,
+  "description": "",
+  "scenarios": ["Game Scenario: Save and Load"],
+  "assertions": [
+
+  ]
+}

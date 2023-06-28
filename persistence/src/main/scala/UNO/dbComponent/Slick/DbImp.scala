@@ -50,7 +50,7 @@ object DbImp:
     }.flatten.toList
 
     val player1Cards = Await.result(PlayerCardsDOA.read(players(0)), 10.seconds).toList
-    val player2Cards = Await.result(PlayerCardsDOA.read(players(0)), 10.seconds).toList
+    val player2Cards = Await.result(PlayerCardsDOA.read(players(1)), 10.seconds).toList
     toJson(players, stack, player1Cards, player2Cards).toString
 
   def toJson(player: List[String], stack: List[String], player1Cards: List[(String, String)], player2Cards: List[(String, String)]) =

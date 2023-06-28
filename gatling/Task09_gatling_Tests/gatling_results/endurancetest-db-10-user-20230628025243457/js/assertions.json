@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.EnduranceTest_DB_10_User",
+  "simulationId": "endurancetest-db-10-user-20230628025243457",
+  "start": 1687920764232,
+  "description": "Endurance Test for DB with 10 Users in 300s",
+  "scenarios": ["EnduranceTest"],
+  "assertions": [
+
+  ]
+}
