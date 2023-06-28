@@ -9,27 +9,32 @@ import UNO.dbComponent.MongoDB.MongoDBImp
 
 object fileIOJsonImp {
 
-  def load(): String = {
-    
-    //MongoDBImp.load()
-    //Slick-DB
+  def loadDB(): String = {
+    //Slick-DB:
     DbImp.load()
-    
-    
-    //val file = scala.io.Source.fromFile("gamestate.json").mkString
-    //file
+
+    //Mongo-DB:
+    //MongoDBImp.load()
   }
 
-  def save(gameAsJson: String): Unit = {
+  //normal load
+  def load(): String = {
+    val file = scala.io.Source.fromFile("gamestate.json").mkString
+    file
+  }
 
-    //MongoDBImp.save(gameAsJson)
-    
-    //Slick-DB 
+  def saveDB(gameAsJson: String): Unit = {
+    //Slick-DB:
     DbImp.save(gameAsJson)
     
-    
-    //val pw = PrintWriter(File("gamestate.json"))
-    //pw.write(gameAsJson)
-    //pw.close
+    //Mongo-DB:  
+    //MongoDBImp.save(gameAsJson)
+  } 
+
+  //normal save
+  def save(gameAsJson: String): Unit = {
+    val pw = PrintWriter(File("gamestate.json"))
+    pw.write(gameAsJson)
+    pw.close
   } 
 }

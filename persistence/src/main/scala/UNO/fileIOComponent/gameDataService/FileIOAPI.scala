@@ -25,7 +25,9 @@ object fileIOAPI {
       FileIO-REST-Service
       Available routes:
       GET:  /fileIO/load
+      GET:  /fileIO/loadDB
       POST: /fileIO/save
+      POST: /fileIO/saveDB
       """
 
     val route = concat (
@@ -37,6 +39,11 @@ object fileIOAPI {
           complete(HttpEntity(ContentTypes.`application/json`, fileIOJsonImp.load()))
         }
       },
+      path("fileIO" / "loadDB") {
+        get {
+          complete(HttpEntity(ContentTypes.`application/json`, fileIOJsonImp.loadDB()))
+        }
+      },
       path("fileIO" / "save") {
         post {
           entity(as[String]) { game =>
@@ -44,14 +51,22 @@ object fileIOAPI {
             complete("game saved")
           }
         }
-      }
+      },
+      path("fileIO" / "saveDB") {
+        post {
+          entity(as[String]) { game =>
+            fileIOJsonImp.saveDB(game)
+            complete("game saved")
+          }
+        }
+      },
     )
 
     val bindingFuture = Http().newServerAt("0.0.0.0", 8080).bind(route)
 
     bindingFuture.onComplete{
       case Success(value) => {
-        println(s"Server now online. Please navigate to http://localhost:8080/fileIO\nPress RETURN to stop...")
+        println(s"Server now online. Please navigate to http://localhost:8080/\nPress RETURN to stop...")
         StdIn.readLine() // let it run until user presses return
         bindingFuture
           .flatMap(_.unbind()) // trigger unbinding from the port
