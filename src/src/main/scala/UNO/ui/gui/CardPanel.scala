@@ -12,7 +12,7 @@ import scala.swing.*
 
 class CardPanel(list:Int, index: Int ,controller:controllerInterface) extends FlowPanel:
   print(controller.playerList(1))
-  print(this)
+
   def mycard(): List[Card] =
     list match
       case 0 => controller.playerList.head.playerCards
@@ -23,7 +23,7 @@ class CardPanel(list:Int, index: Int ,controller:controllerInterface) extends Fl
   def cardValue(cardList:List[Card], cardIndex: Int): String =
     if cardList(cardIndex).value == "<-->" then
       "Reverse.png"
-    else if cardList(cardIndex).value == "Ø" then
+    else if cardList(cardIndex).value == "Skip" then
       "Skip.png"
     else if cardList(cardIndex).value == "" then
       "Radio.png"
@@ -79,9 +79,9 @@ class CardPanel(list:Int, index: Int ,controller:controllerInterface) extends Fl
         case event.ButtonClicked(_) => controller.getCard()
       }
       
-  button.preferredSize_=(new Dimension(50,50))
-  button.maximumSize_= (new Dimension(50, 50))
-  button.minimumSize_=(new Dimension(50, 50))
+  button.preferredSize_=(new Dimension(5,5))
+  button.maximumSize_= (new Dimension(5, 5))
+  button.minimumSize_=(new Dimension(5, 5))
   button.background = java.awt.Color.DARK_GRAY
 
   if list == 1 then

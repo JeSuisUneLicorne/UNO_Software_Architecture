@@ -21,7 +21,6 @@ case class gameStartEvent() extends Event:
 
 case class gameStatsEvent() extends Event:
   def gameStats: String =
-    print("PlayerList: " + Controller.playerList)
     "\n" + "_" * 50 + "\nPLAYER " + Controller
       .playerList(0)
       .name

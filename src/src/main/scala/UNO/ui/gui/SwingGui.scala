@@ -4,6 +4,8 @@ package gui
 import UNO.ui.gui.CardPanel
 import UNO.controllerComponent.controllerInterface
 import UNO.controllerComponent.controllerBaseImp.*
+import UNO.model.cardComponent.cardBaseImp.Card
+import UNO.util._
 
 import java.awt.Image
 import javax.swing.ImageIcon
@@ -12,28 +14,230 @@ import scala.swing.BorderPanel.Position
 import scala.swing.Swing.LineBorder
 import scala.swing.event.{ButtonClicked, Key}
 
+import java.awt.Color
+import javax.swing.{BorderFactory, ImageIcon}
+import scala.swing.Alignment.Top
+import scala.swing.event.{ButtonClicked, MouseClicked}
+import scala.swing.{Action, BoxPanel, Button, Dimension, FlowPanel, Font, GridBagPanel, Insets, Label, Menu, MenuBar, MenuItem, Orientation, PopupMenu, Slider, Swing}
+
 class SwingGui(controller: controllerInterface) extends Frame:
   listenTo(controller)
   title = " UNO Game"
-  peer.setPreferredSize(new Dimension(1200, 900))
+  peer.setPreferredSize(new Dimension(1600, 1000))
   peer.setResizable(true)
   peer.setBackground(java.awt.Color.DARK_GRAY)
 
-  def gamePanel: GridPanel = new GridPanel(5, 1):
-    //contents += new Button("bladude")
-    
-    contents += new GridPanel(1, controller.playerList(1).playerCards.size):
-      border = LineBorder(java.awt.Color.DARK_GRAY, 50)
-      background = java.awt.Color.DARK_GRAY
-      for (i <- (1 to controller.playerList(1).playerCards.length))
-        val cardPanel = new CardPanel(1, i - 1, controller)
-        contents += cardPanel.card
+  menuBar = new MenuBar:
+      contents += new Menu("File"):
+        mnemonic = Key.F
+        contents += new MenuItem(Action("New") {
+          controller.setDefault()
+        })
+        contents += new MenuItem(Action("Save") {
+          controller.save
+        })
+        contents += new MenuItem(Action("Load") {
+          controller.load
+        })
+        contents += new MenuItem(Action("Quit") {
+          System.exit(0)
+        })
+      contents += new Menu("Edit"):
+        mnemonic = Key.E
+        contents += new MenuItem(Action("Undo") {
+          controller.undoGet
+        })
+        contents += new MenuItem(Action("Redo") {
+          controller.redoGet
+        })
+      contents += new Menu("Info"):
+        mnemonic = Key.V
+        contents += new MenuItem(Action("Gamerule") {
+        })
 
   // was further down
   contents = new BorderPanel:
     add(welcomePanel, Position.Center)
 
-  
+  def gridBagPanel: GridBagPanel = new GridBagPanel {
+    def constraints(x: Int, y: Int,
+                    gridwidth: Int = 1, gridheight: Int = 1,
+                    fill: GridBagPanel.Fill.Value = GridBagPanel.Fill.None)
+    : Constraints = {
+      val c = new Constraints
+      c.gridx = x
+      c.gridy = y
+      c.gridwidth = gridwidth
+      c.gridheight = gridheight
+      c.fill = fill
+      c
+    }
+    add(handCards, constraints(0, 0, gridheight = 2, gridwidth = 2))
+    add(deck, constraints(3, 1, gridheight = 1))
+    add(disCardPile, constraints(3, 2, gridheight = 1))
+  }
+
+  def handCards : GridBagPanel = new GridBagPanel {
+    def constraints(x: Int, y: Int,
+                    gridwidth: Int, gridheight: Int,
+                    fill: GridBagPanel.Fill.Value = GridBagPanel.Fill.None,
+                    insets: Insets
+                   )
+    : Constraints = {
+      val c = new Constraints
+      c.gridx = x
+      c.gridy = y
+      c.gridwidth = gridwidth
+      c.gridheight = gridheight
+      c.fill = fill
+      c.insets = insets
+      c
+    }
+    new Dimension(1000, 600)
+      var x = 1
+      var b = 1
+      for (i <- 0 to controller.playerList(0).playerCards.length -1 ) {
+          add(new Button() {
+            icon = controller.playerList(0).playerCards(i).color match {
+              case "red" => (scaledImageIcon(getValue("red" , controller.playerList(0).playerCards(i).value), 100, 200))
+              case "blue" => (scaledImageIcon(getValue("blue", controller.playerList(0).playerCards(i).value), 100, 200))
+              case "green" => (scaledImageIcon(getValue("green", controller.playerList(0).playerCards(i).value), 100, 200))
+              case "yellow" => (scaledImageIcon(getValue("yellow", controller.playerList(0).playerCards(i).value), 100, 200))
+              case "black" => (scaledImageIcon(getValue("black", controller.playerList(0).playerCards(i).value), 100, 200))
+            }
+            preferredSize = new Dimension(100, 200)
+            listenTo(this)
+            reactions += {
+              case event.ButtonClicked(_) =>
+                //controller.removeCard(i)
+                //redraw
+            
+                if Strategy.handle(removeCardEvent(i),i) && controller.playerList.head.playerCards.size >= 3 && !controller.unoCall 
+                  || controller.playerList.head.playerCards.size == 2 && controller.unoCall then
+                  controller.removeCard(i)
+                  redraw
+                else if controller.playerList.head.playerCards.size == 1 && controller.unoCall then
+                  controller.publish(new endStates)
+                    // UnoGame.UNO.gui.redraw2
+                else if !Strategy.handle(removeCardEvent(i),i) then
+                  print("bla") //null TODO: Fix this
+                else
+                  controller.removeCard(i)
+            //controller.playerList = controller.playerList.reverse
+            //controller.getCard()
+            //controller.playerList = controller.playerList.reverse
+            //controller.getCard()
+                redraw
+            }
+          }, constraints(i % 4, x, gridheight = 1, gridwidth = 1, insets = new Insets(2, 2, 2, 2)))
+            b += 1
+            if (b > 4) {
+              x += 1
+              b = 0
+            }
+      }
+    }
+
+  def deck : Button = new Button() {
+    reactions += { case event.ButtonClicked(_) =>
+      controller.getCard()
+      redraw
+    }
+    preferredSize = new Dimension(100,200)
+    icon = scaledImageIcon("src/main/Pics/Card_Back.PNG", 100, 200)
+  }
+
+  def disCardPile: Button = new Button() {
+    icon = controller.playStack2(0).color match {
+              case "red" => (scaledImageIcon(getValue("red" ,controller.playStack2(0).value), 100, 200))
+              case "blue" => (scaledImageIcon(getValue("blue", controller.playStack2(0).value), 100, 200))
+              case "green" => (scaledImageIcon(getValue("green", controller.playStack2(0).value), 100, 200))
+              case "yellow" => (scaledImageIcon(getValue("yellow", controller.playStack2(0).value), 100, 200))
+              case "black" => (scaledImageIcon(getValue("black", controller.playStack2(0).value), 100, 200))
+            }
+  }
+
+  def getValue(color: String, value: String): String =
+    //val icon = new ImageIcon()
+    val icon = color match {
+      case "red" => 
+        value match {
+          case "<-->" => "src/main/Pics/Red_Reverse.png"
+          case "+2" => "src/main/Pics/Red_+2.png"
+          case "Skip" => "src/main/Pics/Red_Skip.png"
+          case "0" => "src/main/Pics/Red_0.png"
+          case "1" => "src/main/Pics/Red_1.png"
+          case "2" => "src/main/Pics/Red_2.png"
+          case "3" => "src/main/Pics/Red_3.png"
+          case "4" => "src/main/Pics/Red_4.png"
+          case "5" => "src/main/Pics/Red_5.png"
+          case "6" => "src/main/Pics/Red_6.png"
+          case "7" => "src/main/Pics/Red_7.png"
+          case "8" => "src/main/Pics/Red_8.png"
+          case "9" => "src/main/Pics/Red_9.png"
+          case "+2" => "src/main/Pics/Red_+2.png"
+        }
+      case "blue" => 
+        value match {
+          case "<-->" => "src/main/Pics/Blue_Reverse.png"
+          case "+2" => "src/main/Pics/Blue_+2.png"
+          case "Skip" => "src/main/Pics/Blue_Skip.png"
+          case "0" => "src/main/Pics/Blue_0.png"
+          case "1" => "src/main/Pics/Blue_1.png"
+          case "2" => "src/main/Pics/Blue_2.png"
+          case "3" => "src/main/Pics/Blue_3.png"
+          case "4" => "src/main/Pics/Blue_4.png"
+          case "5" => "src/main/Pics/Blue_5.png"
+          case "6" => "src/main/Pics/Blue_6.png"
+          case "7" => "src/main/Pics/Blue_7.png"
+          case "8" => "src/main/Pics/Blue_8.png"
+          case "9" => "src/main/Pics/Blue_9.png"
+          case "+2" => "src/main/Pics/Blue_+2.png"
+        }
+      case "yellow" =>
+        value match {
+          case "<-->" => "src/main/Pics/Yellow_Reverse.png"
+          case "+2" => "src/main/Pics/Yellow_+2.png"
+          case "Skip" => "src/main/Pics/Yellow_Skip.png"
+          case "0" => "src/main/Pics/Yellow_0.png"
+          case "1" => "src/main/Pics/Yellow_1.png"
+          case "2" => "src/main/Pics/Yellow_2.png"
+          case "3" => "src/main/Pics/Yellow_3.png"
+          case "4" => "src/main/Pics/Yellow_4.png"
+          case "5" => "src/main/Pics/Yellow_5.png"
+          case "6" => "src/main/Pics/Yellow_6.png"
+          case "7" => "src/main/Pics/Yellow_7.png"
+          case "8" => "src/main/Pics/Yellow_8.png"
+          case "9" => "src/main/Pics/Yellow_9.png"
+          case "+2" => "src/main/Pics/Yellow_+2.png"
+        }
+      case "green" =>
+        value match {
+          case "<-->" => "src/main/Pics/Green_Reverse.png"
+          case "+2" => "src/main/Pics/Green_+2.png"
+          case "Skip" => "src/main/Pics/Green_Skip.png"
+          case "0" => "src/main/Pics/Green_0.png"
+          case "1" => "src/main/Pics/Green_1.png"
+          case "2" => "src/main/Pics/Green_2.png"
+          case "3" => "src/main/Pics/Green_3.png"
+          case "4" => "src/main/Pics/Green_4.png"
+          case "5" => "src/main/Pics/Green_5.png"
+          case "6" => "src/main/Pics/Green_6.png"
+          case "7" => "src/main/Pics/Green_7.png"
+          case "8" => "src/main/Pics/Green_8.png"
+          case "9" => "src/main/Pics/Green_9.png"
+          case "+2" => "src/main/Pics/Green_+2.png"          
+        }
+      case "black" =>
+        value match {
+          case "4+ ColorSwitch" => "src/main/Pics/Black_4+_Colorswitch.png"
+          case "ColorSwitch" => "src/main/Pics/Black_ColorSwitch.png"
+        }
+      }
+    icon
+
+
+
 
   visible = true
 
@@ -238,8 +442,8 @@ class SwingGui(controller: controllerInterface) extends Frame:
         contents += new MenuItem(Action("Redo") {
           controller.redoGet
         })
-
         */
+
   def welcomePanel = new GridPanel(2, 1):
     contents += new GridPanel(1, 1):
       border = LineBorder(java.awt.Color.DARK_GRAY, 50)
@@ -264,15 +468,16 @@ class SwingGui(controller: controllerInterface) extends Frame:
       }
 
   def redraw: Unit =
-    contents = new BorderPanel:
-      add(gamePanel, BorderPanel.Position.Center)
+    contents = gridBagPanel
+    //  new BorderPanel: add(gamePanel, BorderPanel.Position.Center)
 
 /*
   def redraw2: Unit =
     contents = new BorderPanel:
       add(endGamePanel, BorderPanel.Position.Center)
 
-  */
+*/
+
   def redraw3: Unit = 
     contents = new BorderPanel:
       add(welcomePanel, BorderPanel.Position.Center)
@@ -283,12 +488,10 @@ class SwingGui(controller: controllerInterface) extends Frame:
     //case event: endStates => redraw2
   }
 
-/*  
-  visible = true
+
+  //visible = true
 
   def scaledImageIcon(path: String, width: Int, height: Int): ImageIcon =
     val orig = new ImageIcon(path)
     val scaledImage = orig.getImage.getScaledInstance(width, height, Image.SCALE_REPLICATE)
     new ImageIcon(scaledImage)
-
-    */

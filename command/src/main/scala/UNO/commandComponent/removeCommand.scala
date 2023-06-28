@@ -10,6 +10,7 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
   override def doStep(): controllerInterface =
     controller.playStack2 = controller.playerList(0).playerCards(handindex) :: controller.playStack2
     cardDiff
+    print("\ninside doStep, from removeComamnd" + controller.playerList(1) + "\n")
     controller
 
   override def undoStep(): controllerInterface = //TODO: Aussetzen, Richtungswechsel funktionieren noch nicht, weil vorher setPlayercard + Playlist umdrehen
@@ -32,7 +33,7 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
         )
       if controller.playerList(0).playerCards(handindex).value == "<-->" then
         controller.playerList = controller.playerList.reverse
-      if controller.playerList(0).playerCards(handindex).value == "Ø" then
+      if controller.playerList(0).playerCards(handindex).value == "Skip" then
         controller.playerList = List(controller.playerList(1), controller.playerList(0))
       controller
   override def redoStep(): controllerInterface = 
@@ -40,7 +41,9 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
     cardDiff
     controller
   
-  def cardDiff: Unit = 
+  def cardDiff: Unit =
+    print("\n" + controller.playerList(0).playerCards(handindex).color)
+    print(controller.playerList(0).playerCards(handindex).value)
     if controller.playerList(0).playerCards(handindex).color == "black" then
       val getColor = controller.colorSet
       controller.playStack2 = Card("", getColor) :: controller.playStack2
@@ -52,7 +55,7 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
           controller.stackCard = controller.stackCard.removeCard()
         )
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
-      case "4+ ColorSwitch" => 
+      case "4+ ColorSwitch" =>
         (1 to 4).foreach((i)=>
           controller.playerList = List(controller.playerList(0),controller.playerList(1).setPlayerCards(controller.stackCard.getCardFromStack()))
           controller.stackCard = controller.stackCard.removeCard()
@@ -61,8 +64,10 @@ class RemoveCommand(handindex: Int, controller: controllerInterface) extends Com
       case "<-->" => 
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
         controller.playerList = controller.playerList.reverse
-      case "Ø" =>
+      case "Skip" =>
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
         controller.playerList = controller.playerList.tail ::: List(controller.playerList.head) ::: Nil
       case _ =>
+        print("\ninside removeCommand: \n" + controller.playerList(0) + "\n" )
         controller.playerList = List(controller.playerList(1), controller.playerList(0).removePlayerCards(handindex))
+        print("\ninside removeCommand after shit: \n" + controller.playerList(1) + "\n" )

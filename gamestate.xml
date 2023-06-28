@@ -3,7 +3,7 @@
     <playerName2> 1 </playerName2>
     <playerCardValue1> 2 1 2 0 &lt;--&gt; &lt;--&gt; 5 </playerCardValue1>
     <playerCardColor1> red blue green green green blue yellow </playerCardColor1>
-    <playerCardValue2> +2 4 Ø 8 1 3 </playerCardValue2>
+    <playerCardValue2> +2 4 Skip 8 1 3 </playerCardValue2>
     <playerCardColor2> blue red yellow green green green </playerCardColor2>
     <playStack>
         <playStackColor> green </playStackColor>

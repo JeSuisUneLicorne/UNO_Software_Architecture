@@ -2,7 +2,6 @@ package command
 package commandComponent
 
 import command.commandComponent.controller.controllerInterface
-//import util.Command
 import command.commandComponent.Command
 
 case class SetCommand(controller: controllerInterface) extends Command:

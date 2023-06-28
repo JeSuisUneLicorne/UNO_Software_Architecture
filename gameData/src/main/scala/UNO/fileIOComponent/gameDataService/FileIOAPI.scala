@@ -13,7 +13,6 @@ import scala.util.Success
 import scala.util.Failure
 
 object fileIOAPI {
-
     implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     // needed for the future flatMap/onComplete in the end
     val executionContext: ExecutionContextExecutor = system.executionContext

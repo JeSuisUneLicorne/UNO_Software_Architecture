@@ -7,8 +7,6 @@ import command.commandComponent.model.stackComponent.stackBaseImp.Stack
 
 case class GameState(playerList: List[Player], playStack: List[Card]):
 
-  print("da")
-
   def getplayerList(): List[Player] =
     playerList
 

@@ -35,7 +35,7 @@ case class Controller() extends controllerInterface with Publisher:
   var playername2 = "2"
   var stackCard = initStackCard()
   var playerList = initPlayerList()
-  var playStack2 = initPlayStack()
+  var playStack2: List[Card] = List()
   var colorSet = ""
   var unoCall = false
   var gameStatus: GameStatus = IDLE
@@ -117,10 +117,7 @@ case class Controller() extends controllerInterface with Publisher:
                 val players : List[Player] = List(player1, player2)
                 
                 val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-                val stackCards: List[Card] = cardRegex
-                  .findAllMatchIn(stackCard)
-                  .map(m => Card(m.group(1), m.group(2)))
-                  .toList
+                val stackCards = parseCardList(stackCard)
                 val newStack = Stack(stackCards)
                 
                 this.playerList = players
@@ -132,7 +129,12 @@ case class Controller() extends controllerInterface with Publisher:
     }
 
   def parseCardList(cardListString: String): List[Card] =
-    val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+    var cardRegex: Regex = "".r
+    if (cardListString.length < 25) {
+      cardRegex  = """Card = (\S+)\s*\|\|\s*(\S+)(?:[,\$])?""".r
+    } else {
+      cardRegex = """Card = (\S+)\s*\|\|\s*(\S+)(?:,\s*|\)$)""".r
+    }
     cardRegex.findAllMatchIn(cardListString).map { matchResult =>
       val value = matchResult.group(1)
       val color = matchResult.group(2)
@@ -175,10 +177,7 @@ case class Controller() extends controllerInterface with Publisher:
             val players : List[Player] = List(player1, player2)
             
             val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-            val stackCards: List[Card] = cardRegex
-              .findAllMatchIn(stackCard)
-              .map(m => Card(m.group(1), m.group(2)))
-              .toList
+            val stackCards = parseCardList(stackCard)
             val newStack = Stack(stackCards)
             
             this.playerList = players
@@ -235,10 +234,7 @@ case class Controller() extends controllerInterface with Publisher:
               val players : List[Player] = List(player1, player2)
               
               val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-              val stackCards: List[Card] = cardRegex
-                .findAllMatchIn(stackCard)
-                .map(m => Card(m.group(1), m.group(2)))
-                .toList
+              val stackCards = parseCardList(stackCard)
               val newStack = Stack(stackCards)
               
               this.playerList = players
@@ -277,10 +273,7 @@ case class Controller() extends controllerInterface with Publisher:
               val players : List[Player] = List(player1, player2)
               
               val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-              val stackCards: List[Card] = cardRegex
-                .findAllMatchIn(stackCard)
-                .map(m => Card(m.group(1), m.group(2)))
-                .toList
+              val stackCards = parseCardList(stackCard)
               val newStack = Stack(stackCards)
               
               this.playerList = players

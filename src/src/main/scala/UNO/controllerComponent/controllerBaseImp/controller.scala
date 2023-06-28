@@ -43,14 +43,16 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
   var gameState: GameState = GameState(playerList, playStack2)
   //val injector = Guice.createInjector(new UnoGameModule)
   //val fileIo = injector.getInstance(classOf[FileIO])
-//  def Controller: controllerInterface = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
+  //def Controller: controllerInterface = Guice.createInjector(new UnoGameModule).getInstance(classOf[controllerInterface])
   //val fileIo: FileIO = Guice.createInjector(new UnoGameModule).getInstance(classOf[FileIO])
-  //val gameDataServer = "http://localhost:8080/fileIO"
-  val gameDataServer = "http://gameData:8080/fileIO"
-
-  //val commandServer = "http://localhost:8081/command"
-  val commandServer = "http://command:8081/command"
   
+  //val gameDataServer = "http://localhost:8080/fileIO"
+  //val commandServer = "http://localhost:8081/command"
+
+  // For Docker:
+  val commandServer = "http://0.0.0.0:8081/command"
+  val gameDataServer = "http://0.0.0.0:8080/fileIO"
+
   def setDefault(): Unit =
     stackCard = initStackCard()
     playerList = initPlayerList()
@@ -98,7 +100,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       uri = commandServer + "/doStep",
       entity = doSetCommandJson(this)
       ))
-
     response.onComplete{
       case Failure(_) => sys.error("No Json")
       case Success(value) => {
@@ -114,14 +115,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
                 val player1 = Player("1", player1Cards)
                 val player2 = Player("2", player2Cards)
                 val players : List[Player] = List(player1, player2)
-                
-                val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-                val stackCards: List[Card] = cardRegex
-                  .findAllMatchIn(stackCard)
-                  .map(m => Card(m.group(1), m.group(2)))
-                  .toList
+                val stackCards = parseCardList(stackCard)
                 val newStack = Stack(stackCards)
-                
                 this.playerList = players
                 this.stackCard = newStack
                 publish(new updateStates)
@@ -131,7 +126,12 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
     }
 
   def parseCardList(cardListString: String): List[Card] =
-    val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
+    var cardRegex: Regex = "".r
+    if (cardListString.length < 25) {
+      cardRegex  = """Card = (\S+)\s*\|\|\s*(\S+)(?:[,\$])?""".r
+    } else {
+      cardRegex = """Card = (\S+)\s*\|\|\s*(\S+)(?:,\s*|\)$)""".r
+    }
     cardRegex.findAllMatchIn(cardListString).map { matchResult =>
       val value = matchResult.group(1)
       val color = matchResult.group(2)
@@ -144,7 +144,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       "playerList2" -> controller.playerList(1).toString,
       "stackCard" -> controller.stackCard.toString,
       "command" -> "set",
-      "handindex" -> 1.toString
+      "handindex" -> 1.toString,
+      "playStack" -> controller.playStack2.toString
       ).toString
 
   def removeCard(handindex: Int): Unit =
@@ -172,15 +173,13 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
             val player1 = Player("1", player1Cards)
             val player2 = Player("2", player2Cards)
             val players : List[Player] = List(player1, player2)
-            
-            val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-            val stackCards: List[Card] = cardRegex
-              .findAllMatchIn(stackCard)
-              .map(m => Card(m.group(1), m.group(2)))
-              .toList
+            val stackCards = parseCardList(stackCard)
             val newStack = Stack(stackCards)
-            
+            val playStack = (json \ "playStack").as[String]
+            val playStack2 = parseCardList(playStack)
+            this.playStack2 = playStack2
             this.playerList = players
+            print(this.playerList)
             this.stackCard = newStack
             publish(new updateStates)
           }
@@ -188,7 +187,6 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       }
     }
 
-    
     //old removeCard
     //stackCard = stackEmpty()
     //undoManager.doStep(new RemoveCommand(handindex:Int, this))
@@ -202,7 +200,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
       "playerList2" -> controller.playerList(1).toString,
       "stackCard" -> controller.stackCard.toString,
       "command" -> "remove",
-      "handindex" -> handindex.toString
+      "handindex" -> handindex.toString,
+      "playStack" -> controller.playStack2.toString
       ).toString
 
   def undoGet: Unit = undoRedoget(true)
@@ -232,14 +231,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
               val player1 = Player("1", player1Cards)
               val player2 = Player("2", player2Cards)
               val players : List[Player] = List(player1, player2)
-              
-              val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-              val stackCards: List[Card] = cardRegex
-                .findAllMatchIn(stackCard)
-                .map(m => Card(m.group(1), m.group(2)))
-                .toList
+              val stackCards = parseCardList(stackCard)
               val newStack = Stack(stackCards)
-              
               this.playerList = players
               this.stackCard = newStack
               publish(new updateStates)
@@ -274,14 +267,8 @@ case class Controller @Inject()() extends controllerInterface with Publisher:
               val player1 = Player("1", player1Cards)
               val player2 = Player("2", player2Cards)
               val players : List[Player] = List(player1, player2)
-              
-              val cardRegex: Regex = """Card = (\S+) \|\| (\S+)""".r
-              val stackCards: List[Card] = cardRegex
-                .findAllMatchIn(stackCard)
-                .map(m => Card(m.group(1), m.group(2)))
-                .toList
+              val stackCards = parseCardList(stackCard)
               val newStack = Stack(stackCards)
-              
               this.playerList = players
               this.stackCard = newStack
               publish(new updateStates)
