@@ -1,0 +1,10 @@
+{
+  "simulation": "gatling.LoadTest_Multi",
+  "simulationId": "loadtest-multi-20230628022701064",
+  "start": 1687919221774,
+  "description": "LoadTest Multi: save and load normal and on DB with 100 Users",
+  "scenarios": ["LoadTest: save and load normal and with DB"],
+  "assertions": [
+
+  ]
+}
